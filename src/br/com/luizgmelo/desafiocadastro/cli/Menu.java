@@ -5,33 +5,35 @@ import br.com.luizgmelo.desafiocadastro.repository.PetRepository;
 import br.com.luizgmelo.desafiocadastro.service.PetService;
 import br.com.luizgmelo.desafiocadastro.service.ValidateService;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
+// TODO corrigir validação do menu.
 public class Menu {
     public void showMenu() {
-        System.out.println("==== Sistema de Cadastro de Pet ====");
-        System.out.println();
-        System.out.println("1. Cadastrar um novo pet");
-        System.out.println("2. Listar pets por algum critério (idade, nome, raça)");
-        System.out.println("3. Deletar um pet cadastrado");
-        System.out.println("4. Listar todos os pets cadastrados");
-        System.out.println("5. Alterar os dados do pet cadastrado");
-        System.out.println("6. Sair");
-        System.out.print("Digite uma das opções acima: ");
+
         Scanner scanner = new Scanner(System.in);
 
         PetService petService = new PetService(new ValidateService(), new PetRepository());
 
-        int option;
+        int option = -1;
         do {
-            while (!scanner.hasNextInt()) {
-                System.out.println("\nDigite apenas o número da opção.\n");
-                this.showMenu();
-                scanner.next();
-            }
+            System.out.println("==== Sistema de Cadastro de Pet ====\n");
+            System.out.println("1. Cadastrar um novo pet");
+            System.out.println("2. Alterar os dados do pet cadastrado");
+            System.out.println("3. Deletar um pet cadastrado");
+            System.out.println("4. Listar todos os pets cadastrados");
+            System.out.println("5. Listar pets por algum critério (idade, nome, raça)");
+            System.out.println("6. Sair");
+            System.out.print("Digite uma das opções acima: ");
 
-            option = scanner.nextInt();
-            System.out.print("\n");
+            try {
+                option = scanner.nextInt();
+            } catch (InputMismatchException e) {
+                scanner.nextLine();
+                System.out.println("\nDigite apenas um número entre 1-6\n");
+                continue;
+            }
 
             switch (option) {
                 case 1:
@@ -52,10 +54,6 @@ public class Menu {
                     break;
                 case 6:
                     System.exit(0);
-                default:
-                    System.out.println("Opção inválida por favor digite um número entre 1 e 6");
-
-                    System.out.print("\n");
             }
         } while (option < 1 || option > 6);
     }
