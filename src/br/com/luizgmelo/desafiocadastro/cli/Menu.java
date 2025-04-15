@@ -9,14 +9,12 @@ import java.util.Scanner;
 
 public class Menu {
     public void showMenu() {
-
         Scanner scanner = new Scanner(System.in);
-
         PetService petService = new PetService(new ValidateService(), new PetRepository());
 
-        int option = 0;
+        int option = -1;
         do {
-            System.out.println("==== Sistema de Cadastro de Pet ====\n");
+            System.out.println("\n==== Sistema de Cadastro de Pet ====\n");
             System.out.println("1. Cadastrar um novo pet");
             System.out.println("2. Alterar os dados do pet cadastrado");
             System.out.println("3. Deletar um pet cadastrado");
@@ -29,27 +27,29 @@ public class Menu {
                 option = scanner.nextInt();
             } catch (InputMismatchException e) {
                 scanner.nextLine();
-                System.out.println("\nDigite apenas um número entre 1-6\n");
+                System.out.println("\nDigite apenas um número entre 1-6");
                 continue;
             }
 
             switch (option) {
                 case 1:
-                    petService.registerPet();
+                    petService.registerPet(scanner);
                     break;
                 case 2:
                     System.out.println("== Busca de Pet ==");
                     petService.searchPet(scanner);
                     break;
                 case 3:
-                    System.out.println("Você escolheu a opção 3");
+                    // TODO Implementar deleção de pet
                     break;
                 case 4:
-                    System.out.println("Você escolheu a opção 4");
+                    // TODO Implementar listar todos os pets
                     break;
                 case 5:
-                    System.out.println("Você escolheu a opção 5");
+                    // TODO Implementar listar pets por critérios
                     break;
+                default:
+                    System.out.println("\nDigite apenas um número entre 1-6");
             }
         } while (option != 6);
     }
