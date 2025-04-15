@@ -6,11 +6,11 @@ import br.com.luizgmelo.desafiocadastro.model.PetType;
 public class ValidateService {
     final String NOT_INFORMED = "NÃO INFORMADO";
 
-    public void validateName(String name) {
-        if (name.isEmpty()) {
-            throw new RuntimeException("O nome do pet é um campo obrigatório");
+    public void validateName(String name, String fieldName) {
+        if (name.trim().isEmpty()) {
+            throw new RuntimeException(fieldName + " é um campo obrigatório");
         } else if (hasNumbersOrSpecialCharacters(name)) {
-            throw new RuntimeException("O nome do pet só pode conter letras");
+            throw new RuntimeException(fieldName + " só pode conter letras");
         }
     }
 
@@ -34,15 +34,25 @@ public class ValidateService {
         return sex;
     }
 
-    public void validateInteger(String string, String errorMessage) {
+    public String validateHouseNumber(String string) {
+        if (string.trim().isEmpty()) {
+            return NOT_INFORMED;
+        }
+
         try {
             Integer.parseInt(string);
         } catch (NumberFormatException e) {
-            throw new NumberFormatException(errorMessage);
+            throw new NumberFormatException("O número da casa deve ser um número inteiro");
         }
+
+        return string;
     }
 
-    public void validateAge(String ageString) {
+    public String validateAge(String ageString) {
+        if (ageString.trim().isEmpty()) {
+            return NOT_INFORMED;
+        }
+
         try {
             double age = Double.parseDouble(ageString.replace(',', '.'));
 
@@ -52,9 +62,15 @@ public class ValidateService {
         } catch (NumberFormatException e) {
             throw new NumberFormatException("A idade deve ser um número inteiro");
         }
+
+        return ageString;
     }
 
-    public void validateWeight(String weightString) {
+    public String validateWeight(String weightString) {
+        if (weightString.trim().isEmpty()) {
+            return NOT_INFORMED;
+        }
+
         try {
             double weight = Double.parseDouble(weightString.replace(',', '.'));
 
@@ -65,12 +81,8 @@ public class ValidateService {
         } catch (NumberFormatException e) {
             throw new NumberFormatException("O peso deve ser um número decimal");
         }
-    }
 
-    public void validateBreed(String breed) {
-        if (hasNumbersOrSpecialCharacters(breed)) {
-            throw new RuntimeException("A raça somente deve conter letras.");
-        }
+        return weightString;
     }
 
     public boolean hasNumbersOrSpecialCharacters(String string) {

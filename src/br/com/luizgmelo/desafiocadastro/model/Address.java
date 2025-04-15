@@ -4,13 +4,11 @@ public class Address {
     private String houseNumber;
     private String city;
     private String street;
-    private String neighborhood;
 
-    public Address(String houseNumber, String city, String street, String neighborhood) {
+    public Address(String houseNumber, String city, String street) {
         this.houseNumber = houseNumber;
         this.city = city;
         this.street = street;
-        this.neighborhood = neighborhood;
     }
 
     public String getHouseNumber() {
@@ -37,16 +35,8 @@ public class Address {
         this.street = street;
     }
 
-    public String getNeighborhood() {
-        return neighborhood;
-    }
-
-    public void setNeighborhood(String neighborhood) {
-        this.neighborhood = neighborhood;
-    }
-
     @Override
     public String toString() {
-        return street + ", " + neighborhood + ", " + houseNumber + ", " + city;
+        return street + ", " + ", " + houseNumber + ", " + city;
     }
 }

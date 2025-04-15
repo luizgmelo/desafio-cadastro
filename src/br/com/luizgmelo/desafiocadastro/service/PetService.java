@@ -6,6 +6,7 @@ import br.com.luizgmelo.desafiocadastro.model.Pet;
 import br.com.luizgmelo.desafiocadastro.model.PetSex;
 import br.com.luizgmelo.desafiocadastro.model.PetType;
 import br.com.luizgmelo.desafiocadastro.repository.PetRepository;
+import br.com.luizgmelo.desafiocadastro.utils.FormReader;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -26,74 +27,55 @@ public class PetService {
         this.petRepository = petRepository;
     }
 
-    public void registerPet() {
-        File file = new File("formulario.txt");
-        Scanner scanner = new Scanner(System.in);
+    public void registerPet(Scanner scanner) {
+        FormReader formReader = new FormReader("formulario.txt");
 
-        try (Scanner asksFile = new Scanner(file)) {
-            // 1. Qual o nome e sobrenome do pet?
-            String petName = getQuestion(asksFile, scanner);
-            validateService.validateName(petName);
+        // 1. Qual o nome e sobrenome do pet?
+        String petName = getQuestion(formReader, scanner);
+        validateService.validateName(petName, "nome do pet");
 
-            // 2. Qual o tipo do pet (Cachorro/Gato)?
-            String type = getQuestion(asksFile, scanner).toUpperCase();
-            PetType petType = validateService.validateType(type);
+        // 2. Qual o tipo do pet (Cachorro/Gato)?
+        String type = getQuestion(formReader, scanner);
+        PetType petType = validateService.validateType(type);
 
-            // 3. Qual o sexo do animal?
-            String sex = getQuestion(asksFile, scanner);
-            PetSex petSex = validateService.validateSex(sex);
+        // 3. Qual o sexo do animal?
+        String sex = getQuestion(formReader, scanner);
+        PetSex petSex = validateService.validateSex(sex);
 
-            // 4. Qual endereço e bairro que ele foi encontrado?
-            System.out.println(asksFile.nextLine());
+        // 4. Qual endereço e bairro que ele foi encontrado?
+        formReader.getNextQuestion();
 
-            // 4.1 - Número da Casa:
-            String petHouseNumber = getQuestion(asksFile, scanner);
-            if (petHouseNumber.isEmpty()) {
-                petHouseNumber = validateService.NOT_INFORMED;
-            } else {
-                validateService.validateInteger(petHouseNumber, "O número da casa deve ser um número inteiro");
-            }
+        //  4.1 - Rua:
+        String petStreet = getQuestion(formReader, scanner);
+        validateService.validateName(petStreet, "nome da rua");
 
-            // 4.2 - Cidade:
-            String petCity = getQuestion(asksFile, scanner);
+        // 4.2 - Número da Casa:
+        String petHouseNumber = getQuestion(formReader, scanner);
+        petHouseNumber = validateService.validateHouseNumber(petHouseNumber);
 
-            //  4.4 - Rua:
-            String petStreet = getQuestion(asksFile, scanner);
+        // 4.3 - Cidade:
+        String petCity = getQuestion(formReader, scanner);
+        validateService.validateName(petCity, "nome da cidade");
 
-            // 4.5 - Bairro:
-            String petNeighborhood = getQuestion(asksFile, scanner);
+        // 5. Qual a idade aproximada do pet?
+        String petAge = getQuestion(formReader, scanner);
+        petAge = validateService.validateAge(petAge);
 
-            // 5. Qual a idade em anos aproximada do pet?
-            String petAge = getQuestion(asksFile, scanner);
+        // 6. Qual o peso em kilos aproximado do pet?
+        String petWeight = getQuestion(formReader, scanner);
+        petWeight = validateService.validateWeight(petWeight);
 
-            if (petAge.isEmpty()) {
-                petAge = validateService.NOT_INFORMED;
-            } else {
-                validateService.validateAge(petAge);
-            }
-            petAge = petAge.equals(validateService.NOT_INFORMED) ? validateService.NOT_INFORMED : petAge + " anos";
 
-            // 6. Qual o peso em kilos aproximado do pet?
-            String petWeight = getQuestion(asksFile, scanner);
+        // 7. Qual a raça do pet?
+        String petBreed = getQuestion(formReader, scanner);
+        validateService.validateName(petBreed, "raça");
 
-            if (petWeight.isEmpty()) {
-                petWeight = validateService.NOT_INFORMED;
-            } else {
-                validateService.validateWeight(petWeight);
-            }
-            petWeight = petWeight.equals(validateService.NOT_INFORMED) ? validateService.NOT_INFORMED : petWeight + " kg";
+        formReader.close();
 
-            // 7. Qual a raça do pet?
-            String petBreed = getQuestion(asksFile, scanner);
-            validateService.validateBreed(petBreed);
+        Address petAddress = new Address(petHouseNumber, petCity, petStreet);
+        Pet pet = new Pet(petName, petType, petSex, petAddress, petAge, petWeight, petBreed);
 
-            Address petAddress = new Address(petHouseNumber, petCity, petStreet, petNeighborhood);
-            Pet pet = new Pet(petName, petType, petSex, petAddress, petAge, petWeight, petBreed);
-
-            petRepository.savePet(pet);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException("Não foi possível encontrar o arquivo formulario.txt");
-        }
+        petRepository.savePet(pet);
     }
 
     public void searchPet(Scanner scanner) {
@@ -168,8 +150,8 @@ public class PetService {
     }
 
 
-    public String getQuestion(Scanner asksFile, Scanner scanner) {
-        System.out.print(asksFile.nextLine());
+    public String getQuestion(FormReader formReader, Scanner scanner) {
+        System.out.print(formReader.getNextQuestion());
         return scanner.nextLine();
     }
 }

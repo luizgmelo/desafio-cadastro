@@ -25,6 +25,7 @@ public class Menu {
 
             try {
                 option = scanner.nextInt();
+                scanner.nextLine();
             } catch (InputMismatchException e) {
                 scanner.nextLine();
                 System.out.println("\nDigite apenas um número entre 1-6");
@@ -33,6 +34,7 @@ public class Menu {
 
             switch (option) {
                 case 1:
+                    System.out.println("\n=== Cadastro do Pet ===");
                     petService.registerPet(scanner);
                     break;
                 case 2:
