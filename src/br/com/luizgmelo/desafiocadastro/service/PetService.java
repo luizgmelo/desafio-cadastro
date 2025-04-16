@@ -44,7 +44,7 @@ public class PetService {
 
         //  4.1 - Rua:
         String petStreet = getQuestion(formReader, scanner);
-        validateService.validateName(petStreet, "nome da rua");
+        validateService.validateStreetName(petStreet);
 
         // 4.2 - Número da Casa:
         String petHouseNumber = getQuestion(formReader, scanner);
