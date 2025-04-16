@@ -8,9 +8,6 @@ import br.com.luizgmelo.desafiocadastro.model.PetType;
 import br.com.luizgmelo.desafiocadastro.repository.PetRepository;
 import br.com.luizgmelo.desafiocadastro.utils.FormReader;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;

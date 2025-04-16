@@ -38,5 +38,7 @@ public class PetRepository {
         } catch (IOException e) {
             throw new RuntimeException("Erro ao salvar dados no arquivo");
         }
+
+        System.out.println("\n Cadastro realizado com sucesso!");
     }
 }
