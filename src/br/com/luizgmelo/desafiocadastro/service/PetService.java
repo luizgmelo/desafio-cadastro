@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class PetService {
     ValidateService validateService;
@@ -76,79 +77,66 @@ public class PetService {
     }
 
     public void searchPet(Scanner scanner) {
-        scanner.nextLine();
-        System.out.println("Qual o tipo de animal você quer buscar(Cachorro ou Gato)? ");
+
+        Path petFolder = Paths.get("petsCadastrados");
+        List<Pet> petList = getPetList(petFolder);
+
+        // TODO Mostrar um menu de critérios de busca | Processe a seleção do usuário
+        System.out.print("Qual o tipo do pet? (Gato/Cachorro)? ");
         PetType petType = validateService.validateType(scanner.nextLine());
-        List<String> query = new ArrayList<>();
 
-        int criteria;
-        int[] options = new int[2];
+        Menu.showSearchMenu(scanner);
 
-        do {
-            System.out.print("Quantos critérios você quer usar (1 ou 2)? ");
-            criteria = scanner.nextInt();
-        } while (criteria != 1 && criteria != 2);
 
-        Menu.showSearchMenu();
+        // TODO Filtre os pets de acordo com os critérios
 
-        for (int i = 0; i < criteria; i++) {
-            System.out.print("Digite o " + (i + 1) + "° critério: ");
-            options[i] = scanner.nextInt();
-        }
 
-        for (int i = 0; i < criteria; i++) {
-            switch (options[i]) {
-                case 1:
-                    System.out.println("Qual parte do nome quer pesquisar: ");
-                    break;
-                case 2:
-                    System.out.println("Qual sexo (Macho/Femea): ");
-                    break;
-                case 3:
-                    System.out.println("Qual a idade: ");
-                    break;
-                case 4:
-                    System.out.println("Qual o peso: ");
-                    break;
-                case 5:
-                    System.out.println("Qual a raça: ");
-                    break;
-                case 6:
-                    System.out.println("Qual o endereço: ");
-                    break;
-            }
-            String q = scanner.nextLine();
-            query.add(q);
-        }
 
-        Path folder = Paths.get("petsCadastrados");
+        // TODO Exiba os resultados
+    }
 
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(folder)) {
-            for (Path path : stream) {
+    private static List<Pet> getPetList(Path folder) {
+        List<Pet> petList = new ArrayList<>();
+
+        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(folder)) {
+            for (Path path : directoryStream) {
                 if (!Files.isDirectory(path)) {
-                    List<String> allLines = Files.readAllLines(path);
-                    String petTypeInFile = allLines.get(1).substring(4);
-                    if (petTypeInFile.equalsIgnoreCase(petType.name())) {
-                        for (String line : allLines) {
-                            for (String q : query) {
-                                boolean isMatch = line.toUpperCase().contains(q.toUpperCase());
-                                System.out.println(isMatch);
-                            }
-                            System.out.println("outra linha");
-                        }
-
-                    }
+                    Pet pet = getPetFromFile(path);
+                    petList.add(pet);
                 }
-                System.out.println("outro arquivo");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        return petList;
     }
 
+    private static Pet getPetFromFile(Path file) throws IOException {
+        List<String> allLines = Files.readAllLines(file);
+        Map<Integer, String> data = new HashMap<>();
+
+        for (String line : allLines) {
+            String[] part = line.split("-", 2);
+            data.put(Integer.parseInt(part[0].trim()), part[1].trim());
+        }
+
+        String[] address = data.get(4).split(",");
+
+        return new Pet(
+                data.get(1),
+                PetType.valueOf(data.get(2)),
+                PetSex.valueOf(data.get(3)),
+                new Address(address[0], address[1], address[2]),
+                data.get(5),
+                data.get(6),
+                data.get(7)
+        );
+    }
 
     public String getQuestion(FormReader formReader, Scanner scanner) {
         System.out.print(formReader.getNextQuestion());
         return scanner.nextLine();
     }
 }
+
