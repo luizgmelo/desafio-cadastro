@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class PetService {
     private final ValidateService validateService;
@@ -81,14 +82,23 @@ public class PetService {
         System.out.print("Qual o tipo do pet? (Gato/Cachorro)? ");
         PetType petType = validateService.validateType(scanner.nextLine());
 
-        Menu.showSearchMenu(scanner);
-
+        Map<String, String> criteriaValue = Menu.showSearchMenu(scanner);
 
         // TODO Filtre os pets de acordo com os critérios
-
-
+        List<Pet> petFiltered = petList.stream()
+                .filter(pet -> petType.name().equalsIgnoreCase(pet.getType().name()))
+                .filter(pet -> checkCriterias(criteriaValue, pet))
+                .collect(Collectors.toList());
 
         // TODO Exiba os resultados
+        for (int i = 0; i < petFiltered.size(); i++) {
+            System.out.println(i+1 + ". " + petFiltered.get(i).getName() + " - " +
+                                            petFiltered.get(i).getSex() + " - " +
+                                            petFiltered.get(i).getStreetName() + ", " + petFiltered.get(i).getHouseNumber() + ", " + petFiltered.get(i).getCity() + " - " +
+                                            petFiltered.get(i).getAge() + " - " +
+                                            petFiltered.get(i).getWeight() + " - " +
+                                            petFiltered.get(i).getBreed());
+        }
     }
 
     private static List<Pet> getPetList(Path folder) {
@@ -98,7 +108,9 @@ public class PetService {
             for (Path path : directoryStream) {
                 if (!Files.isDirectory(path)) {
                     Pet pet = getPetFromFile(path);
-                    petList.add(pet);
+                    if (pet != null) {
+                        petList.add(pet);
+                    }
                 }
             }
         } catch (IOException e) {
@@ -112,6 +124,10 @@ public class PetService {
         List<String> allLines = Files.readAllLines(file);
         Map<Integer, String> data = new HashMap<>();
 
+        if (allLines.isEmpty()) {
+            return null;
+        }
+
         for (String line : allLines) {
             String[] part = line.split("-", 2);
             data.put(Integer.parseInt(part[0].trim()), part[1].trim());
@@ -121,8 +137,8 @@ public class PetService {
 
         return new Pet(
                 data.get(1),
-                PetType.valueOf(data.get(2)),
-                PetSex.valueOf(data.get(3)),
+                PetType.valueOf(data.get(2).toUpperCase()),
+                PetSex.valueOf(data.get(3).toUpperCase()),
                 address[0], address[1], address[2],
                 data.get(5),
                 data.get(6),
@@ -133,6 +149,17 @@ public class PetService {
     public String getQuestion(FormReaderService formReader, Scanner scanner) {
         System.out.print(formReader.getNextQuestion());
         return scanner.nextLine();
+    }
+
+    public boolean checkCriterias(Map<String, String> criteriaValue, Pet pet) {
+        for (Map.Entry<String, String> entry : criteriaValue.entrySet()) {
+            String value = entry.getValue();
+
+            if (pet.toString().toLowerCase().contains(value.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 

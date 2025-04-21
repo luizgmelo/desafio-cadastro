@@ -61,7 +61,7 @@ public class Menu {
         } while (option != 6);
     }
 
-    public static void showSearchMenu(Scanner scanner) {
+    public static Map<String, String> showSearchMenu(Scanner scanner) {
         List<String> options = Arrays.asList("Nome", "Sexo", "Idade", "Peso", "Raça", "Endereço");
         Map<String, String> map = new HashMap<>();
 
@@ -72,7 +72,7 @@ public class Menu {
 
 
         for (int i = 0; i < 2; i++) {
-            System.out.println("Escolha o " + (i+1) + "° critério: ");
+            System.out.print("Escolha o " + (i+1) + "° critério: ");
             int criteria;
             try {
                 criteria = scanner.nextInt();
@@ -82,27 +82,21 @@ public class Menu {
                 scanner.nextLine();
             }
 
-            System.out.print("Digite o valor de " + options.get(criteria) + ": ");
+            System.out.print("Digite o valor de " + options.get(criteria - 1) + ": ");
             String value = scanner.nextLine();
 
-            map.put(options.get(criteria), value);
+            map.put(options.get(criteria - 1), value);
 
             if (map.size() == 1) {
-                while (true) {
-                    System.out.print("Deseja selecionar mais um critério? (S/N)");
-                    String res = scanner.nextLine();
+                System.out.print("Deseja selecionar mais um critério? (S/N)");
+                String res = scanner.nextLine();
 
-                    if (res.contains("SsNn")) {
-                        break;
-                    }
+                if (res.charAt(0) == 'N' || res.charAt(0) == 'n') {
+                    break;
                 }
             }
-
-
         }
-        scanner.nextLine();
-        String response = scanner.nextLine();
 
-
+        return map;
     }
 }
