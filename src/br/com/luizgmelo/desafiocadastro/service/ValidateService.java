@@ -29,7 +29,7 @@ public class ValidateService {
     public PetType validateType(String typeString) {
         PetType type;
         try {
-            type = PetType.valueOf(capitalize(typeString));
+            type = PetType.valueOf(typeString.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("O tipo do pet só pode ser Cachorro ou Gato");
         }
@@ -39,7 +39,7 @@ public class ValidateService {
     public PetSex validateSex(String sexString) {
         PetSex sex;
         try {
-            sex = PetSex.valueOf(capitalize(sexString));
+            sex = PetSex.valueOf(sexString.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("O sexo do pet só pode ser Macho ou Femea");
         }
@@ -103,9 +103,5 @@ public class ValidateService {
 
     public boolean hasNumbersOrSpecialCharacters(String string) {
         return !string.matches("^[ a-zA-Z]+$");
-    }
-
-    public String capitalize(String string) {
-        return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
     }
 }

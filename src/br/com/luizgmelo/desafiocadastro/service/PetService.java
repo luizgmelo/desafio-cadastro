@@ -1,12 +1,10 @@
 package br.com.luizgmelo.desafiocadastro.service;
 
-import br.com.luizgmelo.desafiocadastro.cli.Menu;
-import br.com.luizgmelo.desafiocadastro.model.Address;
 import br.com.luizgmelo.desafiocadastro.model.Pet;
 import br.com.luizgmelo.desafiocadastro.model.PetSex;
 import br.com.luizgmelo.desafiocadastro.model.PetType;
 import br.com.luizgmelo.desafiocadastro.repository.PetRepository;
-import br.com.luizgmelo.desafiocadastro.utils.FormReader;
+import br.com.luizgmelo.desafiocadastro.view.Menu;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -14,19 +12,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class PetService {
-    ValidateService validateService;
-    PetRepository petRepository;
+    private final ValidateService validateService;
+    private final PetRepository petRepository;
 
-    public PetService(ValidateService validateService, PetRepository petRepository) {
-        this.validateService = validateService;
-        this.petRepository = petRepository;
+    public PetService() {
+        this.validateService = new ValidateService();
+        this.petRepository = new PetRepository();
     }
 
     public void registerPet(Scanner scanner) {
-        FormReader formReader = new FormReader("formulario.txt");
+        FormReaderService formReader = new FormReaderService("formulario.txt");
 
         // 1. Qual o nome e sobrenome do pet?
         String petName = getQuestion(formReader, scanner);
@@ -70,8 +67,7 @@ public class PetService {
 
         formReader.close();
 
-        Address petAddress = new Address(petHouseNumber, petCity, petStreet);
-        Pet pet = new Pet(petName, petType, petSex, petAddress, petAge, petWeight, petBreed);
+        Pet pet = new Pet(petName, petType, petSex, petStreet, petHouseNumber, petCity, petAge, petWeight, petBreed);
 
         petRepository.savePet(pet);
     }
@@ -127,14 +123,14 @@ public class PetService {
                 data.get(1),
                 PetType.valueOf(data.get(2)),
                 PetSex.valueOf(data.get(3)),
-                new Address(address[0], address[1], address[2]),
+                address[0], address[1], address[2],
                 data.get(5),
                 data.get(6),
                 data.get(7)
         );
     }
 
-    public String getQuestion(FormReader formReader, Scanner scanner) {
+    public String getQuestion(FormReaderService formReader, Scanner scanner) {
         System.out.print(formReader.getNextQuestion());
         return scanner.nextLine();
     }

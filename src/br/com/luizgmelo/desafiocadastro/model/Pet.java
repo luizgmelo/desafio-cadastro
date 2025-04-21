@@ -1,7 +1,5 @@
 package br.com.luizgmelo.desafiocadastro.model;
 
-import br.com.luizgmelo.desafiocadastro.dto.PetDto;
-
 public class Pet {
     private String name;
     private PetType type;
@@ -13,16 +11,16 @@ public class Pet {
     private String weight;
     private String breed;
 
-    public Pet(PetDto petDto) {
-        this.name = petDto.getName();
-        this.type = PetType.valueOf(petDto.getType());
-        this.sex = PetSex.valueOf(petDto.getSex());
-        this.streetName = petDto.getStreetName();
-        this.houseNumber = petDto.getHouseNumber();
-        this.city = petDto.getCity();
-        this.age = petDto.getAge();
-        this.weight = petDto.getWeight();
-        this.breed = petDto.getBreed();
+    public Pet(String name, PetType type, PetSex sex, String streetName, String houseNumber, String city, String age, String weight, String breed) {
+        this.name = name;
+        this.type = type;
+        this.sex = sex;
+        this.streetName = streetName;
+        this.houseNumber = houseNumber;
+        this.city = city;
+        this.age = age;
+        this.weight = weight;
+        this.breed = breed;
     }
 
     public String getName() {
@@ -76,11 +74,15 @@ public class Pet {
     @Override
     public String toString() {
         return  "1 - " + name + "\n" +
-                "2 - " + type + "\n" +
-                "3 - " + sex + "\n" +
+                "2 - " + capitalize(type.name()) + "\n" +
+                "3 - " + capitalize(sex.name()) + "\n" +
                 "4 - " + streetName + ", " + houseNumber + ", " + city + "\n" +
                 "5 - " + age + "\n" +
                 "6 - " + weight + "\n" +
                 "7 - " + breed + "\n";
+    }
+
+    public String capitalize(String string) {
+        return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
     }
 }
