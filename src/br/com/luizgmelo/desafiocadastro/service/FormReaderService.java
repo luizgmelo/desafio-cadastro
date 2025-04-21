@@ -1,13 +1,13 @@
-package br.com.luizgmelo.desafiocadastro.utils;
+package br.com.luizgmelo.desafiocadastro.service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class FormReader {
+public class FormReaderService {
     private final Scanner fileScanner;
 
-    public FormReader(String filePath) {
+    public FormReaderService(String filePath) {
         try {
             File file = new File(filePath);
             this.fileScanner = new Scanner(file);
