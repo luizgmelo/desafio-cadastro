@@ -23,53 +23,7 @@ public class PetService {
         this.petRepository = new PetRepository();
     }
 
-    public void registerPet(Scanner scanner) {
-        FormReaderService formReader = new FormReaderService("formulario.txt");
-
-        // 1. Qual o nome e sobrenome do pet?
-        String petName = getQuestion(formReader, scanner);
-        validateService.validateName(petName, "nome do pet");
-
-        // 2. Qual o tipo do pet (Cachorro/Gato)?
-        String type = getQuestion(formReader, scanner);
-        PetType petType = validateService.validateType(type);
-
-        // 3. Qual o sexo do animal?
-        String sex = getQuestion(formReader, scanner);
-        PetSex petSex = validateService.validateSex(sex);
-
-        // 4. Qual endereço e bairro que ele foi encontrado?
-        formReader.getNextQuestion();
-
-        //  4.1 - Rua:
-        String petStreet = getQuestion(formReader, scanner);
-        validateService.validateStreetName(petStreet);
-
-        // 4.2 - Número da Casa:
-        String petHouseNumber = getQuestion(formReader, scanner);
-        petHouseNumber = validateService.validateHouseNumber(petHouseNumber);
-
-        // 4.3 - Cidade:
-        String petCity = getQuestion(formReader, scanner);
-        validateService.validateName(petCity, "nome da cidade");
-
-        // 5. Qual a idade aproximada do pet?
-        String petAge = getQuestion(formReader, scanner);
-        petAge = validateService.validateAge(petAge);
-
-        // 6. Qual o peso em kilos aproximado do pet?
-        String petWeight = getQuestion(formReader, scanner);
-        petWeight = validateService.validateWeight(petWeight);
-
-
-        // 7. Qual a raça do pet?
-        String petBreed = getQuestion(formReader, scanner);
-        validateService.validateName(petBreed, "raça");
-
-        formReader.close();
-
-        Pet pet = new Pet(petName, petType, petSex, petStreet, petHouseNumber, petCity, petAge, petWeight, petBreed);
-
+    public void addPet(Pet pet) {
         petRepository.savePet(pet);
     }
 
@@ -144,11 +98,6 @@ public class PetService {
                 data.get(6),
                 data.get(7)
         );
-    }
-
-    public String getQuestion(FormReaderService formReader, Scanner scanner) {
-        System.out.print(formReader.getNextQuestion());
-        return scanner.nextLine();
     }
 
     public boolean checkCriterias(Map<String, String> criteriaValue, Pet pet) {

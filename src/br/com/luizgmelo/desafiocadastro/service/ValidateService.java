@@ -4,50 +4,54 @@ import br.com.luizgmelo.desafiocadastro.model.PetSex;
 import br.com.luizgmelo.desafiocadastro.model.PetType;
 
 public class ValidateService {
-    final String NOT_INFORMED = "NÃO INFORMADO";
-
-    public boolean isEmpty(String string) {
-        return string.trim().isEmpty();
-    }
+    private final String NOT_INFORMED = "NÃO INFORMADO";
 
     public void validateName(String name, String fieldName) {
-        if (isEmpty(name)) {
+        if (name.trim().isEmpty()) {
             throw new RuntimeException(fieldName + " é um campo obrigatório");
-        } else if (hasNumbersOrSpecialCharacters(name)) {
+        } else if (!name.matches("^[ a-zA-Z]+$")) {
             throw new RuntimeException(fieldName + " só pode conter letras");
         }
     }
 
     public void validateStreetName(String streetName) {
-        if (isEmpty(streetName)) {
+        if (streetName.trim().isEmpty()) {
             throw new RuntimeException("o nome da rua é um campo obrigatório");
         } else if (!streetName.matches("^[ a-zA-Z0-9]+$")) {
             throw new RuntimeException("o nome da rua não pode conter caracteres especiais");
         }
     }
 
-    public PetType validateType(String typeString) {
-        PetType type;
+    public PetType validateType(String type) {
+        if (type.trim().isEmpty()) {
+            throw new RuntimeException("O tipo de pet é um campo obrigatório");
+        }
+
+        PetType petType;
         try {
-            type = PetType.valueOf(typeString.toUpperCase());
+            petType = PetType.valueOf(type.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("O tipo do pet só pode ser Cachorro ou Gato");
         }
-        return type;
+        return petType;
     }
 
-    public PetSex validateSex(String sexString) {
-        PetSex sex;
+    public PetSex validateSex(String sex) {
+        if (sex.trim().isEmpty()) {
+            throw new RuntimeException("O sexo do pet é um campo obrigatório");
+        }
+
+        PetSex petSex;
         try {
-            sex = PetSex.valueOf(sexString.toUpperCase());
+            petSex = PetSex.valueOf(sex.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("O sexo do pet só pode ser Macho ou Femea");
         }
-        return sex;
+        return petSex;
     }
 
     public String validateHouseNumber(String string) {
-        if (isEmpty(string)) {
+        if (string.trim().isEmpty()) {
             return NOT_INFORMED;
         }
 
@@ -61,7 +65,7 @@ public class ValidateService {
     }
 
     public String validateAge(String ageString) {
-        if (isEmpty(ageString)) {
+        if (ageString.trim().isEmpty()) {
             return NOT_INFORMED;
         }
 
@@ -83,7 +87,7 @@ public class ValidateService {
     }
 
     public String validateWeight(String weightString) {
-        if (isEmpty(weightString)) {
+        if (weightString.trim().isEmpty()) {
             return NOT_INFORMED;
         }
 
@@ -99,9 +103,5 @@ public class ValidateService {
         }
 
         return weightString + "kg";
-    }
-
-    public boolean hasNumbersOrSpecialCharacters(String string) {
-        return !string.matches("^[ a-zA-Z]+$");
     }
 }
