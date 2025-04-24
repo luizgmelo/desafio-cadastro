@@ -12,7 +12,7 @@ public class MenuController {
 
     private final FormReaderService formReaderService;
     private final PetService petService;
-    private ValidateService validateService;
+    private final ValidateService validateService;
 
     public MenuController() {
         this.formReaderService = new FormReaderService("formulario.txt");
@@ -24,8 +24,6 @@ public class MenuController {
     public boolean addPet(String petName, PetType petType, PetSex petSex,
                           String petStreet, String petHouseNumber, String petCity,
                           String petAge, String petWeight, String petBreed) {
-
-
 
         Pet pet = new Pet(petName, petType, petSex, petStreet, petHouseNumber, petCity, petAge, petWeight, petBreed);
 
@@ -57,8 +55,8 @@ public class MenuController {
         return validateService.validateAge(age);
     }
 
-    public String validateWeight(String age) {
-        return validateService.validateAge(age);
+    public String validateWeight(String weight) {
+        return validateService.validateWeight(weight);
     }
 
     public void closeForm() {

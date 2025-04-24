@@ -90,7 +90,8 @@ public class ValidateService {
         }
 
         try {
-            double weight = Double.parseDouble(weightString.replace(',', '.'));
+            weightString = weightString.replace(',', '.');
+            double weight = Double.parseDouble(weightString);
 
             if (weight < 0.5 || weight > 60.0) {
                 throw new RuntimeException("O peso deve ser um número entre 0.5kg e 60kg");

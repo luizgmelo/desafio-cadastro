@@ -84,9 +84,15 @@ public class MenuView {
                     String petBreed = scanner.nextLine();
                     menuController.validateName(petBreed, "raça");
 
-                    menuController.addPet(petName, petType, petSex,
+                    boolean isCreated = menuController.addPet(petName, petType, petSex,
                             petStreet, petHouseNumber, petCity,
                             petAge, petWeight, petBreed);
+
+                    if (isCreated) {
+                        System.out.println("\n Cadastro realizado com sucesso!");
+                    } else {
+                        System.out.println("\n Não foi possível fazer o cadastro");
+                    }
 
                     break;
                 case 2:
