@@ -7,6 +7,9 @@ import br.com.luizgmelo.desafiocadastro.service.FormReaderService;
 import br.com.luizgmelo.desafiocadastro.service.PetService;
 import br.com.luizgmelo.desafiocadastro.service.ValidateService;
 
+import java.util.List;
+import java.util.Map;
+
 
 public class MenuController {
 
@@ -29,6 +32,10 @@ public class MenuController {
 
         petService.addPet(pet);
         return true;
+    }
+
+    public List<Pet> searchPet(PetType petType, Map<String, String> criterias) {
+        return petService.searchPet(petType, criterias);
     }
 
     public void validateName(String name, String fieldName) {

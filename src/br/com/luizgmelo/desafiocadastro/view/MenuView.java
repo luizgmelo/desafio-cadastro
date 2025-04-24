@@ -1,6 +1,7 @@
 package br.com.luizgmelo.desafiocadastro.view;
 
 import br.com.luizgmelo.desafiocadastro.controllers.MenuController;
+import br.com.luizgmelo.desafiocadastro.model.Pet;
 import br.com.luizgmelo.desafiocadastro.model.PetSex;
 import br.com.luizgmelo.desafiocadastro.model.PetType;
 
@@ -106,8 +107,57 @@ public class MenuView {
                     break;
                 case 5:
                     // TODO Implementar listar pets por critérios
-                    System.out.println("== Busca de Pet ==");
-//                    petService.searchPet(scanner);
+                    Map<String, String> criterias = new HashMap<>();
+                    List<String> options = Arrays.asList("Nome", "Sexo", "Idade", "Peso", "Raça", "Endereço");
+
+                    System.out.print("Qual o tipo do pet? (Gato/Cachorro)? ");
+                    PetType petTypeSearch = menuController.validateType(scanner.nextLine());
+
+                    int criteriaCount = 1;
+                    while (true) {
+                        showSearchMenu(options);
+                        System.out.print("Escolha o " + (criteriaCount) + "° critério: ");
+                        int criteria;
+                        try {
+                            criteria = scanner.nextInt();
+
+                            if (criteria < 1 || criteria > 6) {
+                                System.out.println("\nEscolha uma opção entre 1-6");
+                                continue;
+                            }
+
+                        } catch (RuntimeException e) {
+                            System.out.println("\nEscolha uma opção entre 1-6");
+                            continue;
+                        } finally {
+                            scanner.nextLine();
+                        }
+
+                        System.out.print("Digite o valor de " + options.get(criteria - 1) + ": ");
+                        String value = scanner.nextLine();
+                        // TODO Validate Criteria from user above
+
+                        criterias.put(options.get(criteria - 1), value);
+
+                        if (criterias.size() == 1) {
+                            System.out.print("Deseja selecionar mais um critério? (S/N)");
+                            String res = scanner.nextLine();
+
+                            if (res.charAt(0) == 'N' || res.charAt(0) == 'n') {
+                                break;
+                            }
+                        }
+
+                        if (criterias.size() == 2) {
+                            break;
+                        }
+
+                        criteriaCount++;
+                    }
+
+                    List<Pet> petFiltered = menuController.searchPet(petTypeSearch, criterias);
+
+                    showPetList(petFiltered);
                     break;
                 case 6:
                     break;
@@ -118,44 +168,25 @@ public class MenuView {
         } while (option != 6);
     }
 
-
-
-    public static Map<String, String> showSearchMenu(Scanner scanner) {
-        List<String> options = Arrays.asList("Nome", "Sexo", "Idade", "Peso", "Raça", "Endereço");
-        Map<String, String> map = new HashMap<>();
-
-
-        for (int i = 0; i < options.size(); i++) {
-            System.out.println((i + 1) + ". " + options.get(i));
-        }
-
-
-        for (int i = 0; i < 2; i++) {
-            System.out.print("Escolha o " + (i+1) + "° critério: ");
-            int criteria;
-            try {
-                criteria = scanner.nextInt();
-            } catch (RuntimeException e) {
-                throw new RuntimeException("Escolha uma opção entre 1-6");
-            } finally {
-                scanner.nextLine();
-            }
-
-            System.out.print("Digite o valor de " + options.get(criteria - 1) + ": ");
-            String value = scanner.nextLine();
-
-            map.put(options.get(criteria - 1), value);
-
-            if (map.size() == 1) {
-                System.out.print("Deseja selecionar mais um critério? (S/N)");
-                String res = scanner.nextLine();
-
-                if (res.charAt(0) == 'N' || res.charAt(0) == 'n') {
-                    break;
-                }
+    private void showPetList(List<Pet> pets) {
+        if (pets.isEmpty()) {
+            System.out.println("Não foi encontrado nenhum pet!");
+        } else {
+            for (int i = 0; i < pets.size(); i++) {
+                System.out.println(i + 1 + ". " + pets.get(i).getName() + " - " +
+                        pets.get(i).getSex() + " - " +
+                        pets.get(i).getStreetName() + ", " + pets.get(i).getHouseNumber() + ", " + pets.get(i).getCity() + " - " +
+                        pets.get(i).getAge() + " - " +
+                        pets.get(i).getWeight() + " - " +
+                        pets.get(i).getBreed());
             }
         }
+    }
 
-        return map;
+    public void showSearchMenu(List<String> menuOptions) {
+        System.out.println("\n==== Busca de Pet ====");
+        for (int i = 0; i < menuOptions.size(); i++) {
+            System.out.println((i + 1) + ". " + menuOptions.get(i));
+        }
     }
 }

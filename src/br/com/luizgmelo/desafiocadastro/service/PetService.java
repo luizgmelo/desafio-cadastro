@@ -4,22 +4,22 @@ import br.com.luizgmelo.desafiocadastro.model.Pet;
 import br.com.luizgmelo.desafiocadastro.model.PetSex;
 import br.com.luizgmelo.desafiocadastro.model.PetType;
 import br.com.luizgmelo.desafiocadastro.repository.PetRepository;
-import br.com.luizgmelo.desafiocadastro.view.MenuView;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class PetService {
-    private final ValidateService validateService;
     private final PetRepository petRepository;
 
     public PetService() {
-        this.validateService = new ValidateService();
         this.petRepository = new PetRepository();
     }
 
@@ -27,32 +27,19 @@ public class PetService {
         petRepository.savePet(pet);
     }
 
-    public void searchPet(Scanner scanner) {
+    public List<Pet> searchPet(PetType petType,  Map<String, String> criteriaValue) {
 
         Path petFolder = Paths.get("petsCadastrados");
         List<Pet> petList = getPetList(petFolder);
 
-        // TODO Mostrar um menu de critérios de busca | Processe a seleção do usuário
-        System.out.print("Qual o tipo do pet? (Gato/Cachorro)? ");
-        PetType petType = validateService.validateType(scanner.nextLine());
+        return filterPetsByTypeAndCriterias(petType, criteriaValue, petList);
+    }
 
-        Map<String, String> criteriaValue = MenuView.showSearchMenu(scanner);
-
-        // TODO Filtre os pets de acordo com os critérios
-        List<Pet> petFiltered = petList.stream()
+    private List<Pet> filterPetsByTypeAndCriterias(PetType petType, Map<String, String> criteriaValue, List<Pet> petList) {
+        return petList.stream()
                 .filter(pet -> petType.name().equalsIgnoreCase(pet.getType().name()))
                 .filter(pet -> checkCriterias(criteriaValue, pet))
                 .collect(Collectors.toList());
-
-        // TODO Exiba os resultados
-        for (int i = 0; i < petFiltered.size(); i++) {
-            System.out.println(i+1 + ". " + petFiltered.get(i).getName() + " - " +
-                                            petFiltered.get(i).getSex() + " - " +
-                                            petFiltered.get(i).getStreetName() + ", " + petFiltered.get(i).getHouseNumber() + ", " + petFiltered.get(i).getCity() + " - " +
-                                            petFiltered.get(i).getAge() + " - " +
-                                            petFiltered.get(i).getWeight() + " - " +
-                                            petFiltered.get(i).getBreed());
-        }
     }
 
     private static List<Pet> getPetList(Path folder) {
