@@ -7,4 +7,3 @@
 7 - Qual a idade aproximada do pet (anos)?
 8 - Qual o peso aproximado do pet (kg)?
 9 - Qual a raça do pet?
-

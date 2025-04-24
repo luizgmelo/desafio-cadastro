@@ -70,15 +70,13 @@ public class ValidateService {
         }
 
         try {
-            double age = Double.parseDouble(ageString.replace(',', '.'));
+            ageString = ageString.replace(',', '.');
+            double age = Double.parseDouble(ageString);
 
             if (age <= 0 || age > 20) {
                 throw new RuntimeException("A idade deve ser entre 0.1 e 20 anos.");
             }
 
-            if (age < 1) {
-                return (int) (age * 12) + " meses";
-            }
         } catch (NumberFormatException e) {
             throw new NumberFormatException("A idade deve ser um número");
         }

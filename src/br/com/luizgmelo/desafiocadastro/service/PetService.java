@@ -4,7 +4,7 @@ import br.com.luizgmelo.desafiocadastro.model.Pet;
 import br.com.luizgmelo.desafiocadastro.model.PetSex;
 import br.com.luizgmelo.desafiocadastro.model.PetType;
 import br.com.luizgmelo.desafiocadastro.repository.PetRepository;
-import br.com.luizgmelo.desafiocadastro.view.Menu;
+import br.com.luizgmelo.desafiocadastro.view.MenuView;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -36,7 +36,7 @@ public class PetService {
         System.out.print("Qual o tipo do pet? (Gato/Cachorro)? ");
         PetType petType = validateService.validateType(scanner.nextLine());
 
-        Map<String, String> criteriaValue = Menu.showSearchMenu(scanner);
+        Map<String, String> criteriaValue = MenuView.showSearchMenu(scanner);
 
         // TODO Filtre os pets de acordo com os critérios
         List<Pet> petFiltered = petList.stream()
