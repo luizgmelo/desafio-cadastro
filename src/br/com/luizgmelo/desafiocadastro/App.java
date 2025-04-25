@@ -1,6 +1,6 @@
 package br.com.luizgmelo.desafiocadastro;
 
-import br.com.luizgmelo.desafiocadastro.view.MenuView;
+import br.com.luizgmelo.desafiocadastro.views.MenuView;
 
 public class App {
     public static void main(String[] args) {

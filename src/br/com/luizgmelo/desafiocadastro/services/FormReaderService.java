@@ -1,4 +1,4 @@
-package br.com.luizgmelo.desafiocadastro.service;
+package br.com.luizgmelo.desafiocadastro.services;
 
 import java.io.File;
 import java.io.FileNotFoundException;

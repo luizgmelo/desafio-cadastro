@@ -1,7 +1,7 @@
-package br.com.luizgmelo.desafiocadastro.service;
+package br.com.luizgmelo.desafiocadastro.services;
 
-import br.com.luizgmelo.desafiocadastro.model.PetSex;
-import br.com.luizgmelo.desafiocadastro.model.PetType;
+import br.com.luizgmelo.desafiocadastro.models.PetSex;
+import br.com.luizgmelo.desafiocadastro.models.PetType;
 
 public class ValidateService {
     private final String NOT_INFORMED = "NÃO INFORMADO";

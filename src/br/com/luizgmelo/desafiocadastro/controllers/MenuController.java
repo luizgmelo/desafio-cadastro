@@ -1,11 +1,11 @@
 package br.com.luizgmelo.desafiocadastro.controllers;
 
-import br.com.luizgmelo.desafiocadastro.model.Pet;
-import br.com.luizgmelo.desafiocadastro.model.PetSex;
-import br.com.luizgmelo.desafiocadastro.model.PetType;
-import br.com.luizgmelo.desafiocadastro.service.FormReaderService;
-import br.com.luizgmelo.desafiocadastro.service.PetService;
-import br.com.luizgmelo.desafiocadastro.service.ValidateService;
+import br.com.luizgmelo.desafiocadastro.models.Pet;
+import br.com.luizgmelo.desafiocadastro.models.PetSex;
+import br.com.luizgmelo.desafiocadastro.models.PetType;
+import br.com.luizgmelo.desafiocadastro.services.FormReaderService;
+import br.com.luizgmelo.desafiocadastro.services.PetService;
+import br.com.luizgmelo.desafiocadastro.services.ValidateService;
 
 import java.util.List;
 import java.util.Map;

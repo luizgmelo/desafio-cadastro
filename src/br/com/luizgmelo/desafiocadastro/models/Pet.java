@@ -1,4 +1,4 @@
-package br.com.luizgmelo.desafiocadastro.model;
+package br.com.luizgmelo.desafiocadastro.models;
 
 public class Pet {
     private String name;

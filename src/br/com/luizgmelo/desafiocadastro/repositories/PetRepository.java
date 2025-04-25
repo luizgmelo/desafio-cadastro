@@ -1,6 +1,6 @@
-package br.com.luizgmelo.desafiocadastro.repository;
+package br.com.luizgmelo.desafiocadastro.repositories;
 
-import br.com.luizgmelo.desafiocadastro.model.Pet;
+import br.com.luizgmelo.desafiocadastro.models.Pet;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
