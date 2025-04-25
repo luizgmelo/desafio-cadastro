@@ -88,14 +88,38 @@ public class PetService {
     }
 
     public boolean checkCriterias(Map<String, String> criteriaValue, Pet pet) {
+        boolean match = false;
+
         for (Map.Entry<String, String> entry : criteriaValue.entrySet()) {
             String value = entry.getValue();
+            String key = entry.getKey();
 
-            if (pet.toString().toLowerCase().contains(value.toLowerCase())) {
-                return true;
+            switch (key.toLowerCase()) {
+                case "nome":
+                    match |= pet.getName().toLowerCase().contains(value.toLowerCase());
+                    break;
+                case "sexo":
+                    match |= pet.getSex().name().toLowerCase().contains(value.toLowerCase());
+                    break;
+                // TODO Validate age should validate the entire age and not only the first number
+                case "idade":
+                    match |= pet.getAge().charAt(0) == value.charAt(0);
+                    break;
+                case "peso":
+                    match |= pet.getWeight().charAt(0) == value.charAt(0);
+                    break;
+                case "endereco":
+                    // TODO validate streetName, city, houseNumber
+                    break;
+                case "raca":
+                    match &= pet.getBreed().toLowerCase().contains(value.toLowerCase());
+                    break;
             }
+
+            if (match) break;
         }
-        return false;
+
+        return match;
     }
 }
 
