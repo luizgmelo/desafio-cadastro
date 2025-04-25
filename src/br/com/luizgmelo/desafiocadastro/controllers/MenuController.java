@@ -38,6 +38,27 @@ public class MenuController {
         return petService.searchPet(petType, criterias);
     }
 
+    public void validateValue(String value, String type) {
+        switch (type.toLowerCase()) {
+            case "nome":
+            case "raca":
+                validateName(value, type);
+                break;
+            case "sexo":
+                validateSex(value);
+                break;
+            case "idade":
+                validateAge(value);
+                break;
+            case "peso":
+                validateWeight(value);
+                break;
+            case "endereco":
+                // TODO validate streetName, city, houseNumber
+                break;
+        }
+
+    }
     public void validateName(String name, String fieldName) {
         validateService.validateName(name, fieldName);
     }
