@@ -41,13 +41,13 @@ public class MenuView {
                     registerPet();
                     break;
                 case 2:
-                    searchPet();
+                    showPetList(searchPet());
                     break;
                 case 3:
                     listAllPets();
                     break;
                 case 4:
-                    // TODO Implementar alterar cadastro de pet
+                    updatePet();
                     break;
                 case 5:
                     // TODO Implementar deleção de pet
@@ -56,12 +56,41 @@ public class MenuView {
         } while (option != 6);
     }
 
-    private void listAllPets() {
-        List<Pet> allPets = menuController.getListAllPets();
-        showPetList(allPets);
+    private void updatePet() {
+        List<Pet> petsFiltered = searchPet();
+
+        showPetList(petsFiltered);
+
+        if (petsFiltered.isEmpty()) {
+            return;
+        }
+
+
+        int petOption = -1;
+        do {
+            System.out.printf("\nEscolha o número do pet na listagem para alterar o cadastro entre (%d-%d): ", 1, petsFiltered.size());
+
+            try {
+                petOption = scanner.nextInt();
+
+                if (petOption < 1 || petOption > petsFiltered.size()) {
+                    System.out.printf("\nOpção inválida. Digite um número entre %d e %d.\n\n", 1, petsFiltered.size());
+                    showPetList(petsFiltered);
+                }
+            } catch (InputMismatchException ignored) {
+                System.out.printf("\nOpção inválida. Digite um número entre %d e %d.\n\n", 1, petsFiltered.size());
+                showPetList(petsFiltered);
+            } finally {
+                scanner.nextLine();
+            }
+        } while (petOption < 1 || petOption > petsFiltered.size());
     }
 
-    private void searchPet() {
+    private void listAllPets() {
+        showPetList(menuController.getListAllPets());
+    }
+
+    private List<Pet> searchPet() {
         Map<String, String> criterias = new HashMap<>();
         List<String> options = Arrays.asList("Nome", "Sexo", "Idade", "Peso", "Raca", "Endereco");
 
@@ -96,7 +125,7 @@ public class MenuView {
 
         List<Pet> petFiltered = menuController.searchPet(petTypeSearch, criterias);
 
-        showPetList(petFiltered);
+        return petFiltered;
     }
 
     private void registerPet() {
