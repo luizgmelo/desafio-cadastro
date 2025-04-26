@@ -17,19 +17,15 @@ public class MenuView {
         this.menuController = new MenuController();
     }
 
-    public int menu() {
+    public void menu() {
         System.out.println("\n==== Sistema de Cadastro de Pet ====\n");
         System.out.println("1. Cadastrar um novo pet");
-        System.out.println("2. Alterar os dados do pet cadastrado");
-        System.out.println("3. Deletar um pet cadastrado");
-        System.out.println("4. Listar todos os pets cadastrados");
-        System.out.println("5. Listar pets por algum critério (idade, nome, raça)");
+        System.out.println("2. Listar pets por algum critério (idade, nome, raça)");
+        System.out.println("3. Listar todos os pets cadastrados");
+        System.out.println("4. Alterar os dados do pet cadastrado");
+        System.out.println("5. Deletar um pet cadastrado");
         System.out.println("6. Sair");
         System.out.print("Digite uma das opções acima: ");
-
-        int option = -1;
-
-        return option;
     }
 
 
@@ -45,22 +41,24 @@ public class MenuView {
                     registerPet();
                     break;
                 case 2:
-                    // TODO Implementar alterar cadastro de pet
-                    break;
-                case 3:
-                    // TODO Implementar deleção de pet
-                    break;
-                case 4:
-                    // TODO Implementar listar todos os pets
-                    break;
-                case 5:
                     searchPet();
                     break;
-                case 6:
+                case 3:
+                    listAllPets();
+                    break;
+                case 4:
+                    // TODO Implementar alterar cadastro de pet
+                    break;
+                case 5:
+                    // TODO Implementar deleção de pet
                     break;
             }
-
         } while (option != 6);
+    }
+
+    private void listAllPets() {
+        List<Pet> allPets = menuController.getListAllPets();
+        showPetList(allPets);
     }
 
     private void searchPet() {

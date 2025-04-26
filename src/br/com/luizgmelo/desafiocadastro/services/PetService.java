@@ -42,7 +42,7 @@ public class PetService {
                 .collect(Collectors.toList());
     }
 
-    private static List<Pet> getPetList(Path folder) {
+    public List<Pet> getPetList(Path folder) {
         List<Pet> petList = new ArrayList<>();
 
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(folder)) {
