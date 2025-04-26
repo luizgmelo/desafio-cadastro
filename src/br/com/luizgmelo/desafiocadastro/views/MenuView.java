@@ -6,6 +6,15 @@ import br.com.luizgmelo.desafiocadastro.models.PetSex;
 import br.com.luizgmelo.desafiocadastro.models.PetType;
 import br.com.luizgmelo.desafiocadastro.services.InputService;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class MenuView {
@@ -84,6 +93,64 @@ public class MenuView {
                 scanner.nextLine();
             }
         } while (petOption < 1 || petOption > petsFiltered.size());
+
+        Pet pet = petsFiltered.get(petOption-1);
+        Path petFile = menuController.getPetFile(pet);
+
+        Map<Character, String> options = new HashMap<>();
+        options.put('1', "nome");
+        options.put('4', "endereco");
+        options.put('5', "idade");
+        options.put('6', "peso");
+        options.put('7', "raca");
+
+        try {
+            List<String> lines = Files.readAllLines(petFile);
+
+            for (int i = 0; i < lines.size(); i++) {
+
+                String line = lines.get(i);
+
+                if (line.startsWith("2") || line.startsWith("3")) {
+                    continue;
+                };
+
+                System.out.println("Deseja alterar " + line.substring(4) + ":");
+                System.out.print("Deseja alterar esse dado(S/N): ");
+                String answer = scanner.nextLine();
+
+                if (answer.charAt(0) == 'S') {
+                    System.out.print("Digite o novo valor: ");
+                    String newValue = scanner.nextLine();
+                    menuController.validateValue(newValue, options.get(line.charAt(0)));
+                    String prefix = line.substring(0, line.indexOf("-") + 1);
+                    lines.set(i, prefix + " " + newValue);
+                }
+            }
+
+            Files.delete(petFile);
+
+            String fileName = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmm").format(LocalDateTime.now()) + " - " +
+                    lines.get(0).substring(3).toUpperCase().replaceAll("\\s", "") + ".txt";
+
+            Path newPetFile = Paths.get("petsCadastrados", fileName);
+
+            if (!Files.exists(newPetFile)) {
+                Files.createFile(newPetFile);
+
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(newPetFile.toFile()))) {
+                    for (String line : lines) {
+                        writer.write(line);
+                        writer.newLine();
+                    }
+                    System.out.println("\nArquivo atualizado com sucesso!");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void listAllPets() {

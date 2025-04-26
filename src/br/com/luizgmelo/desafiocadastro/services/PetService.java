@@ -61,7 +61,24 @@ public class PetService {
         return petList;
     }
 
-    private static Pet getPetFromFile(Path file) throws IOException {
+    public Path getPetFile(Pet pet) {
+        Path folder = Paths.get("petsCadastrados");
+        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(folder)) {
+            for (Path path : directoryStream) {
+                if (!Files.isDirectory(path)) {
+                    Pet petFromFile = getPetFromFile(path);
+                    if (petFromFile.getName().equalsIgnoreCase(pet.getName())) {
+                        return path;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public Pet getPetFromFile(Path file) throws IOException {
         List<String> allLines = Files.readAllLines(file);
         Map<Integer, String> data = new HashMap<>();
 

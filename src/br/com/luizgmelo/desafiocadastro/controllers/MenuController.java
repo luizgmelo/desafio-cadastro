@@ -7,6 +7,7 @@ import br.com.luizgmelo.desafiocadastro.services.FormReaderService;
 import br.com.luizgmelo.desafiocadastro.services.PetService;
 import br.com.luizgmelo.desafiocadastro.services.ValidateService;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,6 +33,10 @@ public class MenuController {
             return null;
         }
         return petService.getPetList(folder);
+    }
+
+    public Path getPetFile(Pet pet) {
+        return petService.getPetFile(pet);
     }
 
     public boolean addPet(String petName, PetType petType, PetSex petSex,
