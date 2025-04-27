@@ -9,13 +9,19 @@ public class PetListView {
         if (pets.isEmpty()) {
             System.out.println("Não foi encontrado nenhum pet!");
         } else {
-            for (int i = 0; i < pets.size(); i++) {
-                System.out.println(i + 1 + ". " + pets.get(i).getName() + " - " +
-                        pets.get(i).getSex() + " - " +
-                        pets.get(i).getStreetName() + ", " + pets.get(i).getHouseNumber() + ", " + pets.get(i).getCity() + " - " +
-                        pets.get(i).getAge() + " - " +
-                        pets.get(i).getWeight() + " - " +
-                        pets.get(i).getBreed());
+            String petFormat = "%d. %s - %s - %s, %s, %s - %s - %s - %s\n";
+
+            int id = 1;
+            for (Pet pet : pets) {
+                System.out.printf(petFormat,
+                        id,
+                        pet.getName(),
+                        pet.getSex(),
+                        pet.getStreetName(), pet.getHouseNumber(), pet.getCity(),
+                        pet.getAge(),
+                        pet.getWeight(),
+                        pet.getBreed());
+                id++;
             }
         }
     }
