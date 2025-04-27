@@ -6,7 +6,6 @@ import br.com.luizgmelo.desafiocadastro.models.PetSex;
 import br.com.luizgmelo.desafiocadastro.models.PetType;
 import br.com.luizgmelo.desafiocadastro.services.InputService;
 
-import javax.sound.midi.Soundbank;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,15 +18,17 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class MenuView {
-    final Scanner scanner;
-    final MenuController menuController;
+    private final Scanner scanner;
+    private final MenuController menuController;
+    private final PetRegisterView petRegisterView;
 
     public MenuView() {
         this.scanner = new Scanner(System.in);
         this.menuController = new MenuController();
+        this.petRegisterView = new PetRegisterView(scanner, menuController);
     }
 
-    public void menu() {
+    public void showMainMenu() {
         System.out.println("\n==== Sistema de Cadastro de Pet ====\n");
         System.out.println("1. Cadastrar um novo pet");
         System.out.println("2. Listar pets por algum critério (idade, nome, raça)");
@@ -42,13 +43,13 @@ public class MenuView {
     public void showMenu() {
         int option;
         do {
-            menu();
+            showMainMenu();
 
             option = InputService.readInt(scanner);
 
             switch (option) {
                 case 1:
-                    registerPet();
+                    petRegisterView.register();
                     break;
                 case 2:
                     showPetList(searchPet());
@@ -246,63 +247,7 @@ public class MenuView {
         return petFiltered;
     }
 
-    private void registerPet() {
-        System.out.println("\n=== Cadastro do Pet ===");
-        // 1. Qual o nome e sobrenome do pet?
-        System.out.print(menuController.showNextQuestion());
-        String petName = scanner.nextLine();
-        menuController.validateName(petName, "nome do pet");
 
-        // 2. Qual o tipo do pet (Cachorro/Gato)?
-        System.out.print(menuController.showNextQuestion());
-        String type = scanner.nextLine();
-        PetType petType = menuController.validateType(type);
-
-        // 3. Qual o sexo do animal?
-        System.out.print(menuController.showNextQuestion());
-        String sex = scanner.nextLine();
-        PetSex petSex = menuController.validateSex(sex);
-
-        //  4 - Qual o nome da Rua que ele foi encontrado?
-        System.out.print(menuController.showNextQuestion());
-        String petStreet = scanner.nextLine();
-        menuController.validateStreetName(petStreet);
-
-        // 5 - Qual o número da casa?
-        System.out.print(menuController.showNextQuestion());
-        String petHouseNumber = scanner.nextLine();
-        petHouseNumber = menuController.validateHouseNumber(petHouseNumber);
-
-        // 6 - Qual a cidade?
-        System.out.print(menuController.showNextQuestion());
-        String petCity = scanner.nextLine();
-        menuController.validateName(petCity, "nome da cidade");
-
-        // 7. Qual a idade aproximada do pet?
-        System.out.print(menuController.showNextQuestion());
-        String petAge = scanner.nextLine();
-        petAge = menuController.validateAge(petAge);
-
-        // 8. Qual o peso em kilos aproximado do pet?
-        System.out.print(menuController.showNextQuestion());
-        String petWeight = scanner.nextLine();
-        petWeight = menuController.validateWeight(petWeight);
-
-        // 9. Qual a raça do pet?
-        System.out.print(menuController.showNextQuestion());
-        String petBreed = scanner.nextLine();
-        menuController.validateName(petBreed, "raça");
-
-        boolean isCreated = menuController.addPet(petName, petType, petSex,
-                petStreet, petHouseNumber, petCity,
-                petAge, petWeight, petBreed);
-
-        if (isCreated) {
-            System.out.println("\n Cadastro realizado com sucesso!");
-        } else {
-            System.out.println("\n Não foi possível fazer o cadastro");
-        }
-    }
 
     private void showPetList(List<Pet> pets) {
         if (pets.isEmpty()) {
