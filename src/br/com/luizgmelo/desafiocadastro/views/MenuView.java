@@ -2,8 +2,6 @@ package br.com.luizgmelo.desafiocadastro.views;
 
 import br.com.luizgmelo.desafiocadastro.controllers.MenuController;
 import br.com.luizgmelo.desafiocadastro.models.Pet;
-import br.com.luizgmelo.desafiocadastro.models.PetSex;
-import br.com.luizgmelo.desafiocadastro.models.PetType;
 import br.com.luizgmelo.desafiocadastro.services.InputService;
 
 import java.io.BufferedWriter;
@@ -21,11 +19,13 @@ public class MenuView {
     private final Scanner scanner;
     private final MenuController menuController;
     private final PetRegisterView petRegisterView;
+    private final PetSearchView petSearchView;
 
     public MenuView() {
         this.scanner = new Scanner(System.in);
         this.menuController = new MenuController();
         this.petRegisterView = new PetRegisterView(scanner, menuController);
+        this.petSearchView = new PetSearchView(scanner, menuController);
     }
 
     public void showMainMenu() {
@@ -52,7 +52,7 @@ public class MenuView {
                     petRegisterView.register();
                     break;
                 case 2:
-                    showPetList(searchPet());
+                    showPetList(petSearchView.searchPet());
                     break;
                 case 3:
                     listAllPets();
@@ -68,7 +68,7 @@ public class MenuView {
     }
 
     private void deletePet() {
-        List<Pet> petsFiltered = searchPet();
+        List<Pet> petsFiltered = petSearchView.searchPet();
 
         showPetList(petsFiltered);
 
@@ -118,7 +118,7 @@ public class MenuView {
     }
 
     private void updatePet() {
-        List<Pet> petsFiltered = searchPet();
+        List<Pet> petsFiltered = petSearchView.searchPet();
 
         showPetList(petsFiltered);
 
@@ -209,46 +209,6 @@ public class MenuView {
         showPetList(menuController.getListAllPets());
     }
 
-    private List<Pet> searchPet() {
-        Map<String, String> criterias = new HashMap<>();
-        List<String> options = Arrays.asList("Nome", "Sexo", "Idade", "Peso", "Raca", "Endereco");
-
-        System.out.print("Qual o tipo do pet? (Gato/Cachorro)? ");
-        PetType petTypeSearch = menuController.validateType(scanner.nextLine());
-
-        do {
-            showSearchMenu(options);
-
-            System.out.print("Escolha o " + (criterias.size() + 1) + "° critério: ");
-            int criteria = InputService.readInt(scanner);
-
-            if (criteria >= 1 && criteria <= 6) {
-                String option = options.get(criteria - 1);
-                System.out.print("Digite o valor de " + option + ": ");
-                String value = scanner.nextLine();
-                menuController.validateValue(value, option);
-
-                criterias.put(option, value);
-
-                if (criterias.size() == 1) {
-                    System.out.print("Deseja selecionar mais um critério? (S/N)");
-                    String res = scanner.nextLine();
-
-                    if (res.charAt(0) == 'N' || res.charAt(0) == 'n') {
-                        break;
-                    }
-                }
-            }
-
-        } while (criterias.size() != 2);
-
-        List<Pet> petFiltered = menuController.searchPet(petTypeSearch, criterias);
-
-        return petFiltered;
-    }
-
-
-
     private void showPetList(List<Pet> pets) {
         if (pets.isEmpty()) {
             System.out.println("Não foi encontrado nenhum pet!");
@@ -264,10 +224,4 @@ public class MenuView {
         }
     }
 
-    public void showSearchMenu(List<String> menuOptions) {
-        System.out.println("\n==== Busca de Pet ====");
-        for (int i = 0; i < menuOptions.size(); i++) {
-            System.out.println((i + 1) + ". " + menuOptions.get(i));
-        }
-    }
 }
