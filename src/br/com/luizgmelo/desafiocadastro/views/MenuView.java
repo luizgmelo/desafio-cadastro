@@ -6,6 +6,7 @@ import br.com.luizgmelo.desafiocadastro.models.PetSex;
 import br.com.luizgmelo.desafiocadastro.models.PetType;
 import br.com.luizgmelo.desafiocadastro.services.InputService;
 
+import javax.sound.midi.Soundbank;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -59,10 +60,60 @@ public class MenuView {
                     updatePet();
                     break;
                 case 5:
-                    // TODO Implementar deleção de pet
+                    deletePet();
                     break;
             }
         } while (option != 6);
+    }
+
+    private void deletePet() {
+        List<Pet> petsFiltered = searchPet();
+
+        showPetList(petsFiltered);
+
+        if (petsFiltered.isEmpty()) {
+            return;
+        }
+
+        int petOption = -1;
+        do {
+            System.out.printf("\nEscolha o número do pet na listagem para deletar: ", 1, petsFiltered.size());
+
+            try {
+                petOption = scanner.nextInt();
+
+                if (petOption < 1 || petOption > petsFiltered.size()) {
+                    System.out.printf("\nOpção inválida. Digite um número entre %d e %d.\n\n", 1, petsFiltered.size());
+                    showPetList(petsFiltered);
+                }
+            } catch (InputMismatchException ignored) {
+                System.out.printf("\nOpção inválida. Digite um número entre %d e %d.\n\n", 1, petsFiltered.size());
+                showPetList(petsFiltered);
+            } finally {
+                scanner.nextLine();
+            }
+        } while (petOption < 1 || petOption > petsFiltered.size());
+
+        Pet petWantsDelete = petsFiltered.get(petOption - 1);
+
+        System.out.println("Deseja realmente deletar " + petWantsDelete.getName() + ": (SIM/NAO) ");
+        String confirmation = scanner.nextLine();
+
+        if (confirmation.equalsIgnoreCase("sim")) {
+            Path folder = Paths.get("petsCadastrados");
+            try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(folder)) {
+                for (Path path : directoryStream) {
+                    if (!Files.isDirectory(path)) {
+                        if (path.getFileName().toString().contains(petWantsDelete.getName().toUpperCase())) {
+                            Files.delete(path);
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
     }
 
     private void updatePet() {
