@@ -17,20 +17,20 @@ public class PetUpdateView {
 
     private final Scanner scanner;
     private final MenuController menuController;
-    private final MenuView menuView;
+    private final PetListView petListView;
     private final PetSearchView petSearchView;
 
-    public PetUpdateView(Scanner scanner, MenuController menuController, MenuView menuView, PetSearchView petSearchView) {
+    public PetUpdateView(Scanner scanner, MenuController menuController, PetListView petListView, PetSearchView petSearchView) {
         this.scanner = scanner;
         this.menuController = menuController;
-        this.menuView = menuView;
+        this.petListView = petListView;
         this.petSearchView = petSearchView;
     }
 
     public void updatePet() {
         List<Pet> petsFiltered = petSearchView.searchPet();
 
-        menuView.showPetList(petsFiltered);
+        petListView.showPetList(petsFiltered);
 
         if (petsFiltered.isEmpty()) {
             return;
@@ -46,11 +46,11 @@ public class PetUpdateView {
 
                 if (petOption < 1 || petOption > petsFiltered.size()) {
                     System.out.printf("\nOpção inválida. Digite um número entre %d e %d.\n\n", 1, petsFiltered.size());
-                    menuView.showPetList(petsFiltered);
+                    petListView.showPetList(petsFiltered);
                 }
             } catch (InputMismatchException ignored) {
                 System.out.printf("\nOpção inválida. Digite um número entre %d e %d.\n\n", 1, petsFiltered.size());
-                menuView.showPetList(petsFiltered);
+                petListView.showPetList(petsFiltered);
             } finally {
                 scanner.nextLine();
             }

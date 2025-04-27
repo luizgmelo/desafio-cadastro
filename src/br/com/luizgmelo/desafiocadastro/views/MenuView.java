@@ -14,14 +14,16 @@ public class MenuView {
     private final PetSearchView petSearchView;
     private final PetUpdateView petUpdateView;
     private final PetDeleteView petDeleteView;
+    private final PetListView petListView;
 
     public MenuView() {
         this.scanner = new Scanner(System.in);
         this.menuController = new MenuController();
         this.petRegisterView = new PetRegisterView(scanner, menuController);
         this.petSearchView = new PetSearchView(scanner, menuController);
-        this.petUpdateView = new PetUpdateView(scanner, menuController, this, petSearchView);
-        this.petDeleteView = new PetDeleteView(scanner, petSearchView, this);
+        this.petListView = new PetListView();
+        this.petUpdateView = new PetUpdateView(scanner, menuController, petListView, petSearchView);
+        this.petDeleteView = new PetDeleteView(scanner, petSearchView, petListView);
     }
 
     public void showMainMenu() {
@@ -36,7 +38,7 @@ public class MenuView {
     }
 
 
-    public void showMenu() {
+    public void run() {
         int option;
         do {
             showMainMenu();
@@ -48,10 +50,12 @@ public class MenuView {
                     petRegisterView.register();
                     break;
                 case 2:
-                    showPetList(petSearchView.searchPet());
+                    List<Pet> listFiltered = petSearchView.searchPet();
+                    petListView.showPetList(listFiltered);
                     break;
                 case 3:
-                    listAllPets();
+                    List<Pet> allPets = menuController.getListAllPets();
+                    petListView.showPetList(allPets);
                     break;
                 case 4:
                     petUpdateView.updatePet();
@@ -62,26 +66,4 @@ public class MenuView {
             }
         } while (option != 6);
     }
-
-
-
-    private void listAllPets() {
-        showPetList(menuController.getListAllPets());
-    }
-
-    public void showPetList(List<Pet> pets) {
-        if (pets.isEmpty()) {
-            System.out.println("Não foi encontrado nenhum pet!");
-        } else {
-            for (int i = 0; i < pets.size(); i++) {
-                System.out.println(i + 1 + ". " + pets.get(i).getName() + " - " +
-                        pets.get(i).getSex() + " - " +
-                        pets.get(i).getStreetName() + ", " + pets.get(i).getHouseNumber() + ", " + pets.get(i).getCity() + " - " +
-                        pets.get(i).getAge() + " - " +
-                        pets.get(i).getWeight() + " - " +
-                        pets.get(i).getBreed());
-            }
-        }
-    }
-
 }

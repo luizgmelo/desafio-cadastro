@@ -15,18 +15,18 @@ public class PetDeleteView {
 
     private final Scanner scanner;
     private final PetSearchView petSearchView;
-    private final MenuView menuView;
+    private final PetListView petListView;
 
-    public PetDeleteView(Scanner scanner, PetSearchView petSearchView, MenuView menuView) {
+    public PetDeleteView(Scanner scanner, PetSearchView petSearchView, PetListView petListView) {
         this.scanner = scanner;
         this.petSearchView = petSearchView;
-        this.menuView = menuView;
+        this.petListView = petListView;
     }
 
     public void deletePet() {
         List<Pet> petsFiltered = petSearchView.searchPet();
 
-        menuView.showPetList(petsFiltered);
+        petListView.showPetList(petsFiltered);
 
         if (petsFiltered.isEmpty()) {
             return;
@@ -41,11 +41,11 @@ public class PetDeleteView {
 
                 if (petOption < 1 || petOption > petsFiltered.size()) {
                     System.out.printf("\nOpção inválida. Digite um número entre %d e %d.\n\n", 1, petsFiltered.size());
-                    menuView.showPetList(petsFiltered);
+                    petListView.showPetList(petsFiltered);
                 }
             } catch (InputMismatchException ignored) {
                 System.out.printf("\nOpção inválida. Digite um número entre %d e %d.\n\n", 1, petsFiltered.size());
-                menuView.showPetList(petsFiltered);
+                petListView.showPetList(petsFiltered);
             } finally {
                 scanner.nextLine();
             }
