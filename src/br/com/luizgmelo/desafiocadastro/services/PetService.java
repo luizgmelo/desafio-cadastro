@@ -1,5 +1,6 @@
 package br.com.luizgmelo.desafiocadastro.services;
 
+import br.com.luizgmelo.desafiocadastro.models.Address;
 import br.com.luizgmelo.desafiocadastro.models.Pet;
 import br.com.luizgmelo.desafiocadastro.models.PetSex;
 import br.com.luizgmelo.desafiocadastro.models.PetType;
@@ -97,7 +98,7 @@ public class PetService {
                 data.get(1),
                 PetType.valueOf(data.get(2).toUpperCase()),
                 PetSex.valueOf(data.get(3).toUpperCase()),
-                address[0], address[1], address[2],
+                new Address(address[0], address[1], address[2]),
                 data.get(5),
                 data.get(6),
                 data.get(7)

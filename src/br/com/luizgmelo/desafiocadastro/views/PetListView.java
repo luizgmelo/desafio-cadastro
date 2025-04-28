@@ -17,7 +17,7 @@ public class PetListView {
                         id,
                         pet.getName(),
                         pet.getSex(),
-                        pet.getStreetName(), pet.getHouseNumber(), pet.getCity(),
+                        pet.getAddress().getStreet(), pet.getAddress().getHouseNumber(), pet.getAddress().getCity(),
                         pet.getAge(),
                         pet.getWeight(),
                         pet.getBreed());

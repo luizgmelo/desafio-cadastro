@@ -1,5 +1,6 @@
 package br.com.luizgmelo.desafiocadastro.controllers;
 
+import br.com.luizgmelo.desafiocadastro.models.Address;
 import br.com.luizgmelo.desafiocadastro.models.Pet;
 import br.com.luizgmelo.desafiocadastro.models.PetSex;
 import br.com.luizgmelo.desafiocadastro.models.PetType;
@@ -42,7 +43,7 @@ public class MenuController {
                           String petStreet, String petHouseNumber, String petCity,
                           String petAge, String petWeight, String petBreed) {
 
-        Pet pet = new Pet(petName, petType, petSex, petStreet, petHouseNumber, petCity, petAge, petWeight, petBreed);
+        Pet pet = new Pet(petName, petType, petSex, new Address(petStreet, petHouseNumber, petCity), petAge, petWeight, petBreed);
 
         petService.addPet(pet);
     }
