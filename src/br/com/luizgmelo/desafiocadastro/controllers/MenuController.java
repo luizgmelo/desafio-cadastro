@@ -7,6 +7,7 @@ import br.com.luizgmelo.desafiocadastro.models.PetType;
 import br.com.luizgmelo.desafiocadastro.services.FormReaderService;
 import br.com.luizgmelo.desafiocadastro.services.PetService;
 import br.com.luizgmelo.desafiocadastro.services.ValidateService;
+import br.com.luizgmelo.desafiocadastro.services.ValidateTypes;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -52,54 +53,12 @@ public class MenuController {
         return petService.searchPet(petType, criterias);
     }
 
-    public void validateValue(String value, String type) {
-        switch (type.toLowerCase()) {
-            case "nome":
-            case "raca":
-                validateName(value, type);
-                break;
-            case "sexo":
-                validateSex(value);
-                break;
-            case "idade":
-                validateAge(value);
-                break;
-            case "peso":
-                validateWeight(value);
-                break;
-            case "endereco":
-                // TODO validate streetName, city, houseNumber
-                break;
+    public <T> Object validateValue(String value, ValidateTypes type) {
+        try {
+            return type.validate(value);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Tipo de validação é inválido: " + type);
         }
-
-    }
-
-    public void validateName(String name, String fieldName) {
-        validateService.validateName(name, fieldName);
-    }
-
-    public PetType validateType(String type) {
-        return validateService.validateType(type);
-    }
-
-    public PetSex validateSex(String sex) {
-        return validateService.validateSex(sex);
-    }
-
-    public void validateStreetName(String streetName) {
-        validateService.validateStreetName(streetName);
-    }
-
-    public String validateHouseNumber(String houseNumber) {
-        return validateService.validateHouseNumber(houseNumber);
-    }
-
-    public String validateAge(String age) {
-        return validateService.validateAge(age);
-    }
-
-    public String validateWeight(String weight) {
-        return validateService.validateWeight(weight);
     }
 
     public String getNextQuestion() {

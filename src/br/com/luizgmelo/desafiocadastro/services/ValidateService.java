@@ -4,9 +4,9 @@ import br.com.luizgmelo.desafiocadastro.models.PetSex;
 import br.com.luizgmelo.desafiocadastro.models.PetType;
 
 public class ValidateService {
-    private final String NOT_INFORMED = "NÃO INFORMADO";
+    private static final String NOT_INFORMED = "NÃO INFORMADO";
 
-    public void validateName(String name, String fieldName) {
+    public static void validateName(String name, String fieldName) {
         if (name.trim().isEmpty()) {
             throw new RuntimeException(fieldName + " é um campo obrigatório");
         } else if (!name.matches("^[ a-zA-Z]+$")) {
@@ -14,7 +14,7 @@ public class ValidateService {
         }
     }
 
-    public void validateStreetName(String streetName) {
+    public static void validateStreetName(String streetName) {
         if (streetName.trim().isEmpty()) {
             throw new RuntimeException("o nome da rua é um campo obrigatório");
         } else if (!streetName.matches("^[ a-zA-Z0-9]+$")) {
@@ -22,7 +22,7 @@ public class ValidateService {
         }
     }
 
-    public PetType validateType(String type) {
+    public static PetType validateType(String type) {
         if (type.trim().isEmpty()) {
             throw new RuntimeException("O tipo de pet é um campo obrigatório");
         }
@@ -36,7 +36,7 @@ public class ValidateService {
         return petType;
     }
 
-    public PetSex validateSex(String sex) {
+    public static PetSex validateSex(String sex) {
         if (sex.trim().isEmpty()) {
             throw new RuntimeException("O sexo do pet é um campo obrigatório");
         }
@@ -50,7 +50,7 @@ public class ValidateService {
         return petSex;
     }
 
-    public String validateHouseNumber(String string) {
+    public static String validateHouseNumber(String string) {
         if (string.trim().isEmpty()) {
             return NOT_INFORMED;
         }
@@ -64,7 +64,7 @@ public class ValidateService {
         return string;
     }
 
-    public String validateAge(String ageString) {
+    public static String validateAge(String ageString) {
         if (ageString.trim().isEmpty()) {
             return NOT_INFORMED;
         }
@@ -84,7 +84,7 @@ public class ValidateService {
         return ageString + " anos";
     }
 
-    public String validateWeight(String weightString) {
+    public static String validateWeight(String weightString) {
         if (weightString.trim().isEmpty()) {
             return NOT_INFORMED;
         }

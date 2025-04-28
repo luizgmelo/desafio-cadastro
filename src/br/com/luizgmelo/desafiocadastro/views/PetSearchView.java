@@ -4,6 +4,7 @@ import br.com.luizgmelo.desafiocadastro.controllers.MenuController;
 import br.com.luizgmelo.desafiocadastro.models.Pet;
 import br.com.luizgmelo.desafiocadastro.models.PetType;
 import br.com.luizgmelo.desafiocadastro.services.InputService;
+import br.com.luizgmelo.desafiocadastro.services.ValidateTypes;
 
 import java.util.*;
 
@@ -21,7 +22,7 @@ public class PetSearchView {
         List<String> options = Arrays.asList("Nome", "Sexo", "Idade", "Peso", "Raca", "Endereco");
 
         System.out.print("Qual o tipo do pet? (Gato/Cachorro)? ");
-        PetType petTypeSearch = menuController.validateType(scanner.nextLine());
+        PetType petTypeSearch = (PetType) menuController.validateValue(scanner.nextLine(), ValidateTypes.TIPO);
 
         do {
             showSearchMenu(options);
@@ -33,7 +34,7 @@ public class PetSearchView {
                 String option = options.get(criteria - 1);
                 System.out.print("Digite o valor de " + option + ": ");
                 String value = scanner.nextLine();
-                menuController.validateValue(value, option);
+                menuController.validateValue(value, ValidateTypes.valueOf(option));
 
                 criterias.put(option, value);
 

@@ -2,6 +2,7 @@ package br.com.luizgmelo.desafiocadastro.views;
 
 import br.com.luizgmelo.desafiocadastro.controllers.MenuController;
 import br.com.luizgmelo.desafiocadastro.models.Pet;
+import br.com.luizgmelo.desafiocadastro.services.ValidateTypes;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -59,12 +60,12 @@ public class PetUpdateView {
         Pet pet = petsFiltered.get(petOption-1);
         Path petFile = menuController.getPetFile(pet);
 
-        Map<Character, String> options = new HashMap<>();
-        options.put('1', "nome");
-        options.put('4', "endereco");
-        options.put('5', "idade");
-        options.put('6', "peso");
-        options.put('7', "raca");
+        Map<Character, ValidateTypes> options = new HashMap<>();
+        options.put('1', ValidateTypes.NOME);
+        options.put('4', ValidateTypes.RUA);
+        options.put('5', ValidateTypes.IDADE);
+        options.put('6', ValidateTypes.PESO);
+        options.put('7', ValidateTypes.RACA);
 
         try {
             List<String> lines = Files.readAllLines(petFile);
