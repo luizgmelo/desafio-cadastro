@@ -7,7 +7,6 @@ import br.com.luizgmelo.desafiocadastro.services.FormReaderService;
 import br.com.luizgmelo.desafiocadastro.services.PetService;
 import br.com.luizgmelo.desafiocadastro.services.ValidateService;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,14 +38,13 @@ public class MenuController {
         return petService.getPetFile(pet);
     }
 
-    public boolean addPet(String petName, PetType petType, PetSex petSex,
+    public void addPet(String petName, PetType petType, PetSex petSex,
                           String petStreet, String petHouseNumber, String petCity,
                           String petAge, String petWeight, String petBreed) {
 
         Pet pet = new Pet(petName, petType, petSex, petStreet, petHouseNumber, petCity, petAge, petWeight, petBreed);
 
         petService.addPet(pet);
-        return true;
     }
 
     public List<Pet> searchPet(PetType petType, Map<String, String> criterias) {
@@ -74,6 +72,7 @@ public class MenuController {
         }
 
     }
+
     public void validateName(String name, String fieldName) {
         validateService.validateName(name, fieldName);
     }
@@ -102,11 +101,7 @@ public class MenuController {
         return validateService.validateWeight(weight);
     }
 
-    public void closeForm() {
-        formReaderService.close();
-    }
-
-    public String showNextQuestion() {
+    public String getNextQuestion() {
         return formReaderService.getNextQuestion();
     }
 }
