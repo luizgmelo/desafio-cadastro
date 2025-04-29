@@ -2,16 +2,13 @@ package br.com.luizgmelo.desafiocadastro.views;
 
 import br.com.luizgmelo.desafiocadastro.controllers.MenuController;
 import br.com.luizgmelo.desafiocadastro.models.Pet;
+import br.com.luizgmelo.desafiocadastro.models.PetSex;
+import br.com.luizgmelo.desafiocadastro.models.PetType;
 import br.com.luizgmelo.desafiocadastro.services.ValidateTypes;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class PetUpdateView {
@@ -57,65 +54,53 @@ public class PetUpdateView {
             }
         } while (petOption < 1 || petOption > petsFiltered.size());
 
-        Pet pet = petsFiltered.get(petOption-1);
+        Pet pet = petsFiltered.get(petOption - 1);
         Path petFile = menuController.getPetFile(pet);
 
-        Map<Character, ValidateTypes> options = new HashMap<>();
-        options.put('1', ValidateTypes.NOME);
-        options.put('4', ValidateTypes.RUA);
-        options.put('5', ValidateTypes.IDADE);
-        options.put('6', ValidateTypes.PESO);
-        options.put('7', ValidateTypes.RACA);
-
+        List<String> lines;
         try {
-            List<String> lines = Files.readAllLines(petFile);
-
-            for (int i = 0; i < lines.size(); i++) {
-
-                String line = lines.get(i);
-
-                if (line.startsWith("2") || line.startsWith("3")) {
-                    continue;
-                };
-
-                System.out.println("Deseja alterar " + line.substring(4) + ":");
-                System.out.print("Deseja alterar esse dado(S/N): ");
-                String answer = scanner.nextLine();
-
-                if (answer.charAt(0) == 'S') {
-                    System.out.print("Digite o novo valor: ");
-                    String newValue = scanner.nextLine();
-                    menuController.validateValue(newValue, options.get(line.charAt(0)));
-                    String prefix = line.substring(0, line.indexOf("-") + 1);
-                    lines.set(i, prefix + " " + newValue);
-                }
-            }
-
-            Files.delete(petFile);
-
-            String fileName = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmm").format(LocalDateTime.now()) + " - " +
-                    lines.get(0).substring(3).toUpperCase().replaceAll("\\s", "") + ".txt";
-
-            Path newPetFile = Paths.get("petsCadastrados", fileName);
-
-            if (!Files.exists(newPetFile)) {
-                Files.createFile(newPetFile);
-
-                try (BufferedWriter writer = new BufferedWriter(new FileWriter(newPetFile.toFile()))) {
-                    for (String line : lines) {
-                        writer.write(line);
-                        writer.newLine();
-                    }
-                    System.out.println("\nArquivo atualizado com sucesso!");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            lines = Files.readAllLines(petFile);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        for (int i = 0; i < lines.size(); i++) {
+
+            String line = lines.get(i);
+            String actualType = line.substring(0, 1);
+
+
+            String field = ValidateTypes.getByFileValue(actualType).getType();
+            System.out.print("Deseja alterar o " + field + " (S/N) ?");
+            String answer = scanner.nextLine();
+
+            if (answer.charAt(0) == 'S') {
+                System.out.println(field + " atual " + line.substring(4));
+                System.out.print("Digite o novo " + field + ": ");
+                String newValue = scanner.nextLine();
+                menuController.validateValue(newValue, ValidateTypes.getByFileValue(actualType));
+                String prefix = line.substring(0, line.indexOf("-") + 1);
+                lines.set(i, prefix + " " + newValue);
+            }
+        }
+
+        try {
+            Files.delete(petFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        String[] address = lines.get(3).substring(3).split(", ");
+
+        menuController.addPet(
+                lines.get(0).substring(3),
+                PetType.valueOf(lines.get(1).substring(4).toUpperCase()),
+                PetSex.valueOf(lines.get(2).substring(4).toUpperCase()),
+                address[0], address[1], address[2],
+                lines.get(4).substring(3),
+                lines.get(5).substring(3),
+                lines.get(6).substring(3)
+
+        );
     }
-
-
-
 }
