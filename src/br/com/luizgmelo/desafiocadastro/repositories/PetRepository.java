@@ -60,6 +60,8 @@ public class PetRepository {
     }
 
     public List<Pet> getPetList() {
+        createFolderPetsCadastrados();
+
         List<Pet> petList = new ArrayList<>();
 
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(folder)) {
