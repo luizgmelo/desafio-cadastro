@@ -41,7 +41,7 @@ public class PetService {
                 .collect(Collectors.toList());
     }
 
-    public List<Pet> getPetList(Path folder) {
+    public List<Pet> getPetList() {
         return petRepository.getPetList();
     }
 
