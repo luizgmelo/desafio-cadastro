@@ -9,9 +9,7 @@ import br.com.luizgmelo.desafiocadastro.services.PetService;
 import br.com.luizgmelo.desafiocadastro.services.ValidateService;
 import br.com.luizgmelo.desafiocadastro.services.ValidateTypes;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -20,20 +18,14 @@ public class MenuController {
 
     private final FormReaderService formReaderService;
     private final PetService petService;
-    private final ValidateService validateService;
 
     public MenuController() {
         this.formReaderService = new FormReaderService("formulario.txt");
         this.petService = new PetService();
-        this.validateService = new ValidateService();
     }
 
     public List<Pet> getListAllPets() {
-        Path folder = Paths.get("petsCadastrados");
-        if (!Files.exists(folder)) {
-            return null;
-        }
-        return petService.getPetList(folder);
+        return petService.getPetList();
     }
 
     public Path getPetFile(Pet pet) {
