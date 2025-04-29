@@ -1,10 +1,10 @@
 package br.com.luizgmelo.desafiocadastro;
 
-import br.com.luizgmelo.desafiocadastro.views.MenuView;
+import br.com.luizgmelo.desafiocadastro.views.UI;
 
 public class App {
     public static void main(String[] args) {
-        MenuView menu = new MenuView();
+        UI menu = new UI();
         menu.run();
     }
 }

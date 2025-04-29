@@ -1,6 +1,9 @@
 package br.com.luizgmelo.desafiocadastro.views;
 
-import br.com.luizgmelo.desafiocadastro.controllers.MenuController;
+import br.com.luizgmelo.desafiocadastro.controllers.PetController;
+import br.com.luizgmelo.desafiocadastro.enums.MENU;
+import br.com.luizgmelo.desafiocadastro.enums.SearchCriteria;
+import br.com.luizgmelo.desafiocadastro.enums.ValidateType;
 import br.com.luizgmelo.desafiocadastro.models.Pet;
 import br.com.luizgmelo.desafiocadastro.models.PetSex;
 import br.com.luizgmelo.desafiocadastro.models.PetType;
@@ -22,7 +25,46 @@ public class UI {
         this.petController = new PetController();
     }
 
-    public void showMainMenu() {
+    public void run () {
+        MENU selectedOption;
+        do {
+            showMainMenu();
+
+            int option = InputService.readInt(scanner);
+
+            if (option < 1 || option > MENU.values().length) {
+                selectedOption = null;
+                System.out.println(" ** Opção inválida. Digite um dos números do menu.");
+            } else {
+                selectedOption = MENU.values()[option - 1];
+
+                switch (selectedOption) {
+                    case CADASTRAR_PET:
+                        register();
+                        break;
+                    case BUSCAR_PET:
+                        List<Pet> listFiltered = searchPet();
+                        showPetList(listFiltered);
+                        break;
+                    case LISTAR_PETS:
+                        List<Pet> allPets = petController.getListAllPets();
+                        showPetList(allPets);
+                        break;
+                    case ALTERAR_PET:
+                        updatePet();
+                        break;
+                    case DELETAR_PET:
+                        deletePet();
+                        break;
+                    case SAIR:
+                        sair();
+                        break;
+                }
+            }
+        } while (selectedOption != MENU.SAIR && selectedOption != null);
+    }
+
+    public void showMainMenu () {
         System.out.println("\n==== Sistema de Cadastro de Pet ====\n");
         System.out.println("1. Cadastrar um novo pet");
         System.out.println("2. Listar pets por algum critério (idade, nome, raça)");
@@ -273,4 +315,9 @@ public class UI {
         }
         return petOption;
     }
+
+    public void sair() {
+        System.out.println("Volte sempre!");
+    }
+
 }
