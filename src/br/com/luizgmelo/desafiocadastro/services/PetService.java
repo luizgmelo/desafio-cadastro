@@ -29,9 +29,7 @@ public class PetService {
     }
 
     public List<Pet> searchPet(PetType petType,  Map<String, String> criteriaValue) {
-
-        Path petFolder = Paths.get("petsCadastrados");
-        List<Pet> petList = getPetList(petFolder);
+        List<Pet> petList = petRepository.getPetList();
 
         return filterPetsByTypeAndCriterias(petType, criteriaValue, petList);
     }
@@ -44,65 +42,15 @@ public class PetService {
     }
 
     public List<Pet> getPetList(Path folder) {
-        List<Pet> petList = new ArrayList<>();
-
-        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(folder)) {
-            for (Path path : directoryStream) {
-                if (!Files.isDirectory(path)) {
-                    Pet pet = getPetFromFile(path);
-                    if (pet != null) {
-                        petList.add(pet);
-                    }
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        return petList;
+        return petRepository.getPetList();
     }
 
     public Path getPetFile(Pet pet) {
-        Path folder = Paths.get("petsCadastrados");
-        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(folder)) {
-            for (Path path : directoryStream) {
-                if (!Files.isDirectory(path)) {
-                    Pet petFromFile = getPetFromFile(path);
-                    if (petFromFile.getName().equalsIgnoreCase(pet.getName())) {
-                        return path;
-                    }
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
+        return petRepository.getPetFile(pet);
     }
 
     public Pet getPetFromFile(Path file) throws IOException {
-        List<String> allLines = Files.readAllLines(file);
-        Map<Integer, String> data = new HashMap<>();
-
-        if (allLines.isEmpty()) {
-            return null;
-        }
-
-        for (String line : allLines) {
-            String[] part = line.split("-", 2);
-            data.put(Integer.parseInt(part[0].trim()), part[1].trim());
-        }
-
-        String[] address = data.get(4).split(",");
-
-        return new Pet(
-                data.get(1),
-                PetType.valueOf(data.get(2).toUpperCase()),
-                PetSex.valueOf(data.get(3).toUpperCase()),
-                new Address(address[0], address[1], address[2]),
-                data.get(5),
-                data.get(6),
-                data.get(7)
-        );
+        return petRepository.getPetFromFile(file);
     }
 
     public boolean checkCriterias(Map<String, String> criteriaValue, Pet pet) {
