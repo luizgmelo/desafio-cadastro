@@ -1,16 +1,40 @@
 package br.com.luizgmelo.desafiocadastro.services;
 
 public enum ValidateTypes {
-    NOME,
-    TIPO,
-    SEXO,
-    IDADE,
-    PESO,
-    RUA,
-    NUMEROCASA,
-    CIDADE,
-    ENDERECO,
-    RACA;
+    NOME("1", "Nome"),
+    TIPO("2", "Tipo"),
+    SEXO("3", "Sexo"),
+    RUA("4-1", "Rua"),
+    NUMEROCASA("4-2", "NumeroCasa"),
+    CIDADE("4-3", "Cidade"),
+    IDADE("5", "Idade"),
+    PESO("6", "Peso"),
+    RACA("7", "Raca");
+
+    private final String fileValue;
+    private final String type;
+    ValidateTypes(String fileValue, String type) {
+        this.fileValue = fileValue;
+        this.type = type;
+    }
+
+    public static ValidateTypes getByFileValue(String fileValue) {
+        for (ValidateTypes validateType : ValidateTypes.values()) {
+            if (validateType.fileValue.equals(fileValue)) {
+                return validateType;
+            }
+        }
+        return null;
+    }
+
+    public static ValidateTypes getByType(String type) {
+        for (ValidateTypes validateType : ValidateTypes.values()) {
+            if (validateType.name().equalsIgnoreCase(type)) {
+                return validateType;
+            }
+        }
+        return null;
+    }
 
     public <T> Object validate (String value) {
        switch (this) {
@@ -34,13 +58,12 @@ public enum ValidateTypes {
                return null;
            case NUMEROCASA:
                 return ValidateService.validateHouseNumber(value);
-           case ENDERECO:
-
        }
        
        throw new IllegalArgumentException();
    }
 
-
-
+    public String getType() {
+        return type;
+    }
 }
