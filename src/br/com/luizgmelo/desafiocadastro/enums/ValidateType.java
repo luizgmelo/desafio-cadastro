@@ -1,6 +1,8 @@
-package br.com.luizgmelo.desafiocadastro.services;
+package br.com.luizgmelo.desafiocadastro.enums;
 
-public enum ValidateTypes {
+import br.com.luizgmelo.desafiocadastro.services.ValidateService;
+
+public enum ValidateType {
     NOME("1", "Nome"),
     TIPO("2", "Tipo"),
     SEXO("3", "Sexo"),
@@ -13,13 +15,13 @@ public enum ValidateTypes {
 
     private final String fileValue;
     private final String type;
-    ValidateTypes(String fileValue, String type) {
+    ValidateType(String fileValue, String type) {
         this.fileValue = fileValue;
         this.type = type;
     }
 
-    public static ValidateTypes getByFileValue(String fileValue) {
-        for (ValidateTypes validateType : ValidateTypes.values()) {
+    public static ValidateType getByFileValue(String fileValue) {
+        for (ValidateType validateType : ValidateType.values()) {
             if (validateType.fileValue.equals(fileValue)) {
                 return validateType;
             }
@@ -27,8 +29,8 @@ public enum ValidateTypes {
         return null;
     }
 
-    public static ValidateTypes getByType(String type) {
-        for (ValidateTypes validateType : ValidateTypes.values()) {
+    public static ValidateType getByType(String type) {
+        for (ValidateType validateType : ValidateType.values()) {
             if (validateType.name().equalsIgnoreCase(type)) {
                 return validateType;
             }

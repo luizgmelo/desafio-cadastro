@@ -1,25 +1,25 @@
 package br.com.luizgmelo.desafiocadastro.controllers;
 
+import br.com.luizgmelo.desafiocadastro.enums.SearchCriteria;
 import br.com.luizgmelo.desafiocadastro.models.Address;
 import br.com.luizgmelo.desafiocadastro.models.Pet;
 import br.com.luizgmelo.desafiocadastro.models.PetSex;
 import br.com.luizgmelo.desafiocadastro.models.PetType;
 import br.com.luizgmelo.desafiocadastro.services.FormReaderService;
 import br.com.luizgmelo.desafiocadastro.services.PetService;
-import br.com.luizgmelo.desafiocadastro.services.ValidateService;
-import br.com.luizgmelo.desafiocadastro.services.ValidateTypes;
+import br.com.luizgmelo.desafiocadastro.enums.ValidateType;
 
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
 
-public class MenuController {
+public class PetController {
 
     private final FormReaderService formReaderService;
     private final PetService petService;
 
-    public MenuController() {
+    public PetController() {
         this.formReaderService = new FormReaderService("formulario.txt");
         this.petService = new PetService();
     }
@@ -41,11 +41,11 @@ public class MenuController {
         petService.addPet(pet);
     }
 
-    public List<Pet> searchPet(PetType petType, Map<String, String> criterias) {
-        return petService.searchPet(petType, criterias);
+    public List<Pet> searchPet(PetType type, Map<SearchCriteria, String> criterias) {
+        return petService.searchPet(type, criterias);
     }
 
-    public <T> Object validateValue(String value, ValidateTypes type) {
+    public <T> Object validateValue(String value, ValidateType type) {
         try {
             return type.validate(value);
         } catch (IllegalArgumentException e) {

@@ -1,5 +1,6 @@
 package br.com.luizgmelo.desafiocadastro.services;
 
+import br.com.luizgmelo.desafiocadastro.enums.SearchCriteria;
 import br.com.luizgmelo.desafiocadastro.models.Address;
 import br.com.luizgmelo.desafiocadastro.models.Pet;
 import br.com.luizgmelo.desafiocadastro.models.PetSex;
@@ -28,13 +29,13 @@ public class PetService {
         petRepository.savePet(pet);
     }
 
-    public List<Pet> searchPet(PetType petType,  Map<String, String> criteriaValue) {
+    public List<Pet> searchPet(PetType petType,  Map<SearchCriteria, String> criteriaValue) {
         List<Pet> petList = petRepository.getPetList();
 
         return filterPetsByTypeAndCriterias(petType, criteriaValue, petList);
     }
 
-    private List<Pet> filterPetsByTypeAndCriterias(PetType petType, Map<String, String> criteriaValue, List<Pet> petList) {
+    private List<Pet> filterPetsByTypeAndCriterias(PetType petType, Map<SearchCriteria, String> criteriaValue, List<Pet> petList) {
         return petList.stream()
                 .filter(pet -> petType.name().equalsIgnoreCase(pet.getType().name()))
                 .filter(pet -> checkCriterias(criteriaValue, pet))
@@ -49,35 +50,36 @@ public class PetService {
         return petRepository.getPetFile(pet);
     }
 
-    public Pet getPetFromFile(Path file) throws IOException {
-        return petRepository.getPetFromFile(file);
-    }
-
-    public boolean checkCriterias(Map<String, String> criteriaValue, Pet pet) {
+    public boolean checkCriterias(Map<SearchCriteria, String> criteriaValue, Pet pet) {
         boolean match = false;
 
-        for (Map.Entry<String, String> entry : criteriaValue.entrySet()) {
+        for (Map.Entry<SearchCriteria, String> entry : criteriaValue.entrySet()) {
             String value = entry.getValue();
-            String key = entry.getKey();
+            SearchCriteria key = entry.getKey();
 
-            switch (key.toLowerCase()) {
-                case "nome":
+            switch (key) {
+                case NOME:
                     match |= pet.getName().toLowerCase().contains(value.toLowerCase());
                     break;
-                case "sexo":
+                case SEXO:
                     match |= pet.getSex().name().toLowerCase().contains(value.toLowerCase());
                     break;
-                // TODO Validate age should validate the entire age and not only the first number
-                case "idade":
-                    match |= pet.getAge().charAt(0) == value.charAt(0);
+                case IDADE:
+                    match |= pet.getAge().startsWith(value);
                     break;
-                case "peso":
-                    match |= pet.getWeight().charAt(0) == value.charAt(0);
+                case PESO:
+                    match |= pet.getWeight().startsWith(value);
                     break;
-                case "endereco":
-                    // TODO validate streetName, city, houseNumber
+                case RUA:
+                    match |= pet.getAddress().getStreet().toLowerCase().contains(value.toLowerCase());
                     break;
-                case "raca":
+                case CIDADE:
+                    match |= pet.getAddress().getCity().toLowerCase().contains(value.toLowerCase());
+                    break;
+                    case NUMERO:
+                    match |= pet.getAddress().getHouseNumber().contains(value.toLowerCase());
+                    break;
+                case RACA:
                     match &= pet.getBreed().toLowerCase().contains(value.toLowerCase());
                     break;
             }
