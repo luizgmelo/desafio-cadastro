@@ -116,7 +116,7 @@ public class UI {
 
         petController.addPet(petName, petType, petSex, petStreet, petHouseNumber, petCity, petAge, petWeight, petBreed);
 
-        System.out.println("\n Cadastro realizado com sucesso!");
+        System.out.println("Cadastro realizado com sucesso!");
     }
 
     private String readQuestionAndAnswer() {
@@ -200,7 +200,6 @@ public class UI {
             return;
         }
 
-
         int petOption = -1;
         do {
             System.out.printf("\nEscolha o número do pet na listagem para alterar o cadastro entre (%d-%d): ", 1, petsFiltered.size());
@@ -209,54 +208,33 @@ public class UI {
         }
         while (petOption < 1 || petOption > petsFiltered.size());
 
-        Pet pet = petsFiltered.get(petOption - 1);
-        Path petFile = petController.getPetFile(pet);
+        Pet petWantDelete = petsFiltered.get(petOption - 1);
+        List<String> petData = petController.getPetData(petWantDelete);
 
-        List<String> lines;
-        try {
-            lines = Files.readAllLines(petFile);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        for (int i = 0; i < petData.size(); i++) {
+            ValidateType field = ValidateType.values()[i];
+            String value = petData.get(i);
 
-        for (int i = 0; i < lines.size(); i++) {
+            if (field == ValidateType.TIPO || field == ValidateType.SEXO) {
+                petData.set(i, value.toUpperCase());
+                continue;
+            }
 
-            String line = lines.get(i);
-            String actualType = line.substring(0, 1);
-
-
-            String field = ValidateType.getByFileValue(actualType).getType();
-            System.out.print("Deseja alterar o " + field + " (S/N) ?");
+            System.out.printf("Deseja alterar o %s (S/N) ?", field);
             String answer = scanner.nextLine();
 
             if (answer.charAt(0) == 'S') {
-                System.out.println(field + " atual " + line.substring(4));
-                System.out.print("Digite o novo " + field + ": ");
+                System.out.printf("%s atual %s\n", field, value);
+                System.out.printf("Digite o novo %s: ", field);
                 String newValue = scanner.nextLine();
-                petController.validateValue(newValue, ValidateType.getByFileValue(actualType));
-                String prefix = line.substring(0, line.indexOf("-") + 1);
-                lines.set(i, prefix + " " + newValue);
+                petController.validateValue(newValue, field);
+                petData.set(i, newValue);
             }
         }
 
-        try {
-            Files.delete(petFile);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        petController.updatePet(petWantDelete, petData);
 
-        String[] address = lines.get(3).substring(3).split(", ");
-
-        petController.addPet(
-                lines.get(0).substring(3),
-                PetType.valueOf(lines.get(1).substring(4).toUpperCase()),
-                PetSex.valueOf(lines.get(2).substring(4).toUpperCase()),
-                address[0], address[1], address[2],
-                lines.get(4).substring(3),
-                lines.get(5).substring(3),
-                lines.get(6).substring(3)
-
-        );
+        System.out.println("Atualização efetuada com sucesso!");
     }
     // END ===
 

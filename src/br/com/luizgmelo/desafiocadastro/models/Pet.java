@@ -1,5 +1,9 @@
 package br.com.luizgmelo.desafiocadastro.models;
 
+import br.com.luizgmelo.desafiocadastro.enums.ValidateType;
+
+import java.util.List;
+
 public class Pet {
     private String name;
     private PetType type;
@@ -17,6 +21,16 @@ public class Pet {
         this.age = age;
         this.weight = weight;
         this.breed = breed;
+    }
+
+    public Pet(List<String> petData) {
+        this.name = petData.get(0);
+        this.type = PetType.valueOf(petData.get(1));
+        this.sex = PetSex.valueOf(petData.get(2));
+        this.address = new Address(petData.get(3), petData.get(4), petData.get(5));
+        this.age = petData.get(6);
+        this.weight = petData.get(7);
+        this.breed = petData.get(8);
     }
 
     @Override

@@ -9,7 +9,12 @@ import br.com.luizgmelo.desafiocadastro.services.FormReaderService;
 import br.com.luizgmelo.desafiocadastro.services.PetService;
 import br.com.luizgmelo.desafiocadastro.enums.ValidateType;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -41,8 +46,23 @@ public class PetController {
         petService.addPet(pet);
     }
 
+    public void addPet(Pet pet) {
+        addPet(pet.getName(), pet.getType(), pet.getSex(),
+                pet.getAddress().getStreet(), pet.getAddress().getHouseNumber(), pet.getAddress().getCity(),
+                pet.getAge(), pet.getWeight(), pet.getBreed());
+    }
+
     public List<Pet> searchPet(PetType type, Map<SearchCriteria, String> criterias) {
         return petService.searchPet(type, criterias);
+    }
+
+    public void updatePet(Pet petOld, List<String> petData) {
+
+        Pet newPet = new Pet(petData);
+
+        deletePet(petOld);
+
+        addPet(newPet);
     }
 
     public <T> Object validateValue(String value, ValidateType type) {
@@ -55,5 +75,38 @@ public class PetController {
 
     public String getNextQuestion() {
         return formReaderService.getNextQuestion();
+    }
+
+    public List<String> getPetData(Pet pet) {
+        Path petFile = getPetFile(pet);
+        List<String> lines = new ArrayList<>();
+
+        try (BufferedReader br = Files.newBufferedReader(petFile)) {
+
+            String line = br.readLine();
+            while (line != null) {
+                if (line.startsWith("4 -")) {
+                    String[] address = line.substring(4).split(", ");
+                    lines.addAll(Arrays.asList(address));
+                } else {
+                    lines.add(line.substring(4));
+                }
+                line = br.readLine();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return lines;
+    }
+
+    public void deletePet(Pet pet) {
+        Path petFile = getPetFile(pet);
+
+        try {
+            Files.delete(petFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

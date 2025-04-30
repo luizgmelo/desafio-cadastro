@@ -3,30 +3,19 @@ package br.com.luizgmelo.desafiocadastro.enums;
 import br.com.luizgmelo.desafiocadastro.services.ValidateService;
 
 public enum ValidateType {
-    NOME("1", "Nome"),
-    TIPO("2", "Tipo"),
-    SEXO("3", "Sexo"),
-    RUA("4-1", "Rua"),
-    NUMEROCASA("4-2", "NumeroCasa"),
-    CIDADE("4-3", "Cidade"),
-    IDADE("5", "Idade"),
-    PESO("6", "Peso"),
-    RACA("7", "Raca");
+    NOME("Nome"),
+    TIPO("Tipo"),
+    SEXO("Sexo"),
+    RUA("Rua"),
+    NUMEROCASA( "NumeroCasa"),
+    CIDADE("Cidade"),
+    IDADE( "Idade"),
+    PESO( "Peso"),
+    RACA( "Raca");
 
-    private final String fileValue;
     private final String type;
-    ValidateType(String fileValue, String type) {
-        this.fileValue = fileValue;
+    ValidateType(String type) {
         this.type = type;
-    }
-
-    public static ValidateType getByFileValue(String fileValue) {
-        for (ValidateType validateType : ValidateType.values()) {
-            if (validateType.fileValue.equals(fileValue)) {
-                return validateType;
-            }
-        }
-        return null;
     }
 
     public static ValidateType getByType(String type) {
