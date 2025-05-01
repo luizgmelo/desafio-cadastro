@@ -96,7 +96,7 @@ public class UI {
 
         // 5 - Qual o número da casa?
         String petHouseNumber = readQuestionAndAnswer();
-        petHouseNumber = (String) petController.validateValue(petHouseNumber, ValidateType.NUMEROCASA);
+        Integer petHouseNumberInteger = (Integer) petController.validateValue(petHouseNumber, ValidateType.NUMEROCASA);
 
         // 6 - Qual a cidade?
         String petCity = readQuestionAndAnswer();
@@ -104,17 +104,17 @@ public class UI {
 
         // 7. Qual a idade aproximada do pet?
         String petAge = readQuestionAndAnswer();
-        petAge = (String) petController.validateValue(petAge, ValidateType.IDADE);
+        Float petAgeFloat = (Float) petController.validateValue(petAge, ValidateType.IDADE);
 
         // 8. Qual o peso em kilos aproximado do pet?
         String petWeight = readQuestionAndAnswer();
-        petWeight = (String) petController.validateValue(petWeight, ValidateType.PESO);
+        Float petWeightFloat = (Float) petController.validateValue(petWeight, ValidateType.PESO);
 
         // 9. Qual a raça do pet?
         String petBreed = readQuestionAndAnswer();
         petController.validateValue(petBreed, ValidateType.RACA);
 
-        petController.addPet(petName, petType, petSex, petStreet, petHouseNumber, petCity, petAge, petWeight, petBreed);
+        petController.addPet(petName, petType, petSex, petStreet, petHouseNumberInteger, petCity, petAgeFloat, petWeightFloat, petBreed);
 
         System.out.println("Cadastro realizado com sucesso!");
     }
@@ -171,7 +171,7 @@ public class UI {
         if (pets.isEmpty()) {
             System.out.println("Não foi encontrado nenhum pet!");
         } else {
-            String petFormat = "%d. %s - %s - %s, %s, %s - %s - %s - %s\n";
+            String petFormat = "%d. %s - %s - %s, %d, %s - %.1f anos - %.2fkg - %s\n";
 
             int id = 1;
             for (Pet pet : pets) {

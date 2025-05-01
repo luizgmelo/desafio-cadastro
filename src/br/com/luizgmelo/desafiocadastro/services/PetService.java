@@ -65,10 +65,10 @@ public class PetService {
                     match |= pet.getSex().name().toLowerCase().contains(value.toLowerCase());
                     break;
                 case IDADE:
-                    match |= pet.getAge().startsWith(value);
+                    match |= pet.getAge() == Float.parseFloat(value);
                     break;
                 case PESO:
-                    match |= pet.getWeight().startsWith(value);
+                    match |= pet.getWeight() ==  Float.parseFloat(value);
                     break;
                 case RUA:
                     match |= pet.getAddress().getStreet().toLowerCase().contains(value.toLowerCase());
@@ -77,7 +77,7 @@ public class PetService {
                     match |= pet.getAddress().getCity().toLowerCase().contains(value.toLowerCase());
                     break;
                     case NUMERO:
-                    match |= pet.getAddress().getHouseNumber().contains(value.toLowerCase());
+                    match |= pet.getAddress().getHouseNumber() == Integer.parseInt(value);
                     break;
                 case RACA:
                     match &= pet.getBreed().toLowerCase().contains(value.toLowerCase());

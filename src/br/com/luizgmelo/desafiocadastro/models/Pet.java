@@ -1,7 +1,5 @@
 package br.com.luizgmelo.desafiocadastro.models;
 
-import br.com.luizgmelo.desafiocadastro.enums.ValidateType;
-
 import java.util.List;
 
 public class Pet {
@@ -9,11 +7,12 @@ public class Pet {
     private PetType type;
     private PetSex sex;
     private Address address;
-    private String age;
-    private String weight;
+    private Float age;
+    private Float weight;
     private String breed;
+    private final String NOT_INFORMED = "NÃO INFORMADO";
 
-    public Pet(String name, PetType type, PetSex sex, Address address, String age, String weight, String breed) {
+    public Pet(String name, PetType type, PetSex sex, Address address, Float age, Float weight, String breed) {
         this.name = name;
         this.type = type;
         this.sex = sex;
@@ -27,9 +26,9 @@ public class Pet {
         this.name = petData.get(0);
         this.type = PetType.valueOf(petData.get(1));
         this.sex = PetSex.valueOf(petData.get(2));
-        this.address = new Address(petData.get(3), petData.get(4), petData.get(5));
-        this.age = petData.get(6);
-        this.weight = petData.get(7);
+        this.address = new Address(petData.get(3), Integer.parseInt(petData.get(4)), petData.get(5));
+        this.age = petData.get(6).equals(NOT_INFORMED) ?  null : Float.parseFloat(petData.get(6));
+        this.weight = petData.get(7).equals(NOT_INFORMED) ? null : Float.parseFloat(petData.get(7));
         this.breed = petData.get(8);
     }
 
@@ -39,8 +38,8 @@ public class Pet {
                 "2 - " + capitalize(type.name()) + "\n" +
                 "3 - " + capitalize(sex.name()) + "\n" +
                 "4 - " + address.getStreet() + ", " + address.getHouseNumber() + ", " + address.getCity() + "\n" +
-                "5 - " + age + "\n" +
-                "6 - " + weight + "\n" +
+                "5 - " + age + " anos\n" +
+                "6 - " + weight + "kg\n" +
                 "7 - " + breed + "\n";
     }
 
@@ -80,19 +79,19 @@ public class Pet {
         this.address = address;
     }
 
-    public String getAge() {
+    public float getAge() {
         return age;
     }
 
-    public void setAge(String age) {
+    public void setAge(float age) {
         this.age = age;
     }
 
-    public String getWeight() {
+    public float getWeight() {
         return weight;
     }
 
-    public void setWeight(String weight) {
+    public void setWeight(float weight) {
         this.weight = weight;
     }
 

@@ -37,11 +37,11 @@ public class PetController {
         return petService.getPetFile(pet);
     }
 
-    public void addPet(String petName, PetType petType, PetSex petSex,
-                          String petStreet, String petHouseNumber, String petCity,
-                          String petAge, String petWeight, String petBreed) {
+    public void addPet(String name, PetType type, PetSex sex,
+                          String street, int houseNumber, String city,
+                          float age, float weight, String breed) {
 
-        Pet pet = new Pet(petName, petType, petSex, new Address(petStreet, petHouseNumber, petCity), petAge, petWeight, petBreed);
+        Pet pet = new Pet(name, type, sex, new Address(street, houseNumber, city), age, weight, breed);
 
         petService.addPet(pet);
     }

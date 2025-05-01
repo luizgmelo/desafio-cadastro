@@ -2,10 +2,10 @@ package br.com.luizgmelo.desafiocadastro.models;
 
 public class Address {
     private String street;
-    private String houseNumber;
+    private Integer houseNumber;
     private String city;
 
-    public Address(String street, String houseNumber, String city) {
+    public Address(String street, Integer houseNumber, String city) {
         this.street = street;
         this.houseNumber = houseNumber;
         this.city = city;
@@ -19,11 +19,11 @@ public class Address {
         this.street = street;
     }
 
-    public String getHouseNumber() {
+    public Integer getHouseNumber() {
         return houseNumber;
     }
 
-    public void setHouseNumber(String houseNumber) {
+    public void setHouseNumber(Integer houseNumber) {
         this.houseNumber = houseNumber;
     }
 

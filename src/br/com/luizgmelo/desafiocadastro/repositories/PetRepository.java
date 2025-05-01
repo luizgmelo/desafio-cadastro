@@ -93,15 +93,15 @@ public class PetRepository {
             data.put(Integer.parseInt(part[0].trim()), part[1].trim());
         }
 
-        String[] address = data.get(4).split(",");
+        String[] address = data.get(4).split(", ");
 
         return new Pet(
                 data.get(1),
                 PetType.valueOf(data.get(2).toUpperCase()),
                 PetSex.valueOf(data.get(3).toUpperCase()),
-                new Address(address[0], address[1], address[2]),
-                data.get(5),
-                data.get(6),
+                new Address(address[0], Integer.parseInt(address[1]), address[2]),
+                Float.parseFloat(data.get(5).replace(",",".").replace(" anos", "")),
+                Float.parseFloat(data.get(6).replace(",",".").replace("kg", "")),
                 data.get(7)
         );
     }

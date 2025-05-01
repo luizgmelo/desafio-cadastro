@@ -50,28 +50,27 @@ public class ValidateService {
         return petSex;
     }
 
-    public static String validateHouseNumber(String string) {
-        if (string.trim().isEmpty()) {
-            return NOT_INFORMED;
+    public static Integer validateHouseNumber(String houseNumber) {
+        if (houseNumber.trim().isEmpty()) {
+            return null;
         }
 
         try {
-            Integer.parseInt(string);
+            return Integer.parseInt(houseNumber);
         } catch (NumberFormatException e) {
             throw new NumberFormatException("O número da casa deve ser um número inteiro");
         }
-
-        return string;
     }
 
-    public static String validateAge(String ageString) {
+    public static Float validateAge(String ageString) {
         if (ageString.trim().isEmpty()) {
-            return NOT_INFORMED;
+            return null;
         }
 
+        float age;
         try {
             ageString = ageString.replace(',', '.');
-            double age = Double.parseDouble(ageString);
+            age = Float.parseFloat(ageString);
 
             if (age <= 0 || age > 20) {
                 throw new RuntimeException("A idade deve ser entre 0.1 e 20 anos.");
@@ -81,17 +80,18 @@ public class ValidateService {
             throw new NumberFormatException("A idade deve ser um número");
         }
 
-        return ageString + " anos";
+        return age;
     }
 
-    public static String validateWeight(String weightString) {
+    public static Float validateWeight(String weightString) {
         if (weightString.trim().isEmpty()) {
-            return NOT_INFORMED;
+            return null;
         }
 
+        float weight;
         try {
             weightString = weightString.replace(',', '.');
-            double weight = Double.parseDouble(weightString);
+            weight = Float.parseFloat(weightString);
 
             if (weight < 0.5 || weight > 60.0) {
                 throw new RuntimeException("O peso deve ser um número entre 0.5kg e 60kg");
@@ -101,6 +101,6 @@ public class ValidateService {
             throw new NumberFormatException("O peso deve ser um número");
         }
 
-        return weightString + "kg";
+        return weight;
     }
 }
