@@ -30,7 +30,6 @@ public enum ValidateType {
     public <T> Object validate (String value) {
        switch (this) {
            case NOME:
-           case RACA:
                ValidateService.validateName(value, "nome");
                return null;
            case TIPO:
@@ -49,6 +48,9 @@ public enum ValidateType {
                return null;
            case NUMEROCASA:
                 return ValidateService.validateHouseNumber(value);
+           case RACA:
+               ValidateService.validateName(value, "raca");
+               return null;
        }
        
        throw new IllegalArgumentException();
