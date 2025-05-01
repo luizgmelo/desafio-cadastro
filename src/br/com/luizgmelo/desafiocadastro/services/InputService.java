@@ -9,12 +9,8 @@ public class InputService {
        int option = -1;
         try {
             option = scanner.nextInt();
-
-            if (option < 1 || option > 6) {
-                System.out.println("\nEscolha uma opção entre 1-6");
-            }
         } catch (InputMismatchException e) {
-            System.out.println("\nEscolha uma opção entre 1-6");
+            throw new InputMismatchException("Opção inválida, Digite apenas o número da opção");
         } finally {
             scanner.nextLine();
         }

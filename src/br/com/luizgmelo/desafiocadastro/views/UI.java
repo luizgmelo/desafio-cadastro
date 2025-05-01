@@ -142,7 +142,7 @@ public class UI {
             System.out.printf("Escolha o %d° critério: ", criterias.size() + 1);
             int criteria = InputService.readInt(scanner);
 
-            if (criteria >= 1 && criteria <= 6) {
+            if (criteria >= 1 && criteria <= options.size()) {
                 SearchCriteria selectedCriteria = options.get(criteria - 1);
                 System.out.printf("Digite o valor de %s : ", selectedCriteria);
                 String value = scanner.nextLine();
@@ -260,19 +260,8 @@ public class UI {
         String confirmation = scanner.nextLine();
 
         if (confirmation.equalsIgnoreCase("sim")) {
-            Path folder = Paths.get("petsCadastrados");
-            try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(folder)) {
-                for (Path path : directoryStream) {
-                    if (!Files.isDirectory(path)) {
-                        if (path.getFileName().toString().contains(petWantsDelete.getName().toUpperCase())) {
-                            Files.delete(path);
-                        }
-                    }
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
+            petController.deletePet(petWantsDelete);
+            System.out.println("Pet removido com sucesso!");
         }
     }
     // END ===
