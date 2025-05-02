@@ -73,6 +73,9 @@ public class UI {
     // PET REGISTER ====
     public void register() {
         System.out.println("\n=== Cadastro do Pet ===");
+
+        petController.openReaderService();
+
         // 1. Qual o nome e sobrenome do pet?
         String petName = readQuestionAndAnswer();
         petController.validateValue(petName, ValidateType.NOME);
@@ -108,6 +111,8 @@ public class UI {
         // 9. Qual a raça do pet?
         String petBreed = readQuestionAndAnswer();
         petController.validateValue(petBreed, ValidateType.RACA);
+
+        petController.closeReaderService();
 
         petController.addPet(petName, petType, petSex, petStreet, petHouseNumberInteger, petCity, petAgeFloat, petWeightFloat, petBreed);
 

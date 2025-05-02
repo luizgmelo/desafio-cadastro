@@ -73,6 +73,14 @@ public class PetController {
         }
     }
 
+    public void openReaderService() {
+        formReaderService.open();
+    }
+
+    public void closeReaderService() {
+        formReaderService.close();
+    }
+
     public String getNextQuestion() {
         return formReaderService.getNextQuestion();
     }
