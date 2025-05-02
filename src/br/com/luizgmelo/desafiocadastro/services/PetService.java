@@ -1,19 +1,11 @@
 package br.com.luizgmelo.desafiocadastro.services;
 
 import br.com.luizgmelo.desafiocadastro.enums.SearchCriteria;
-import br.com.luizgmelo.desafiocadastro.models.Address;
 import br.com.luizgmelo.desafiocadastro.models.Pet;
-import br.com.luizgmelo.desafiocadastro.models.PetSex;
 import br.com.luizgmelo.desafiocadastro.models.PetType;
 import br.com.luizgmelo.desafiocadastro.repositories.PetRepository;
 
-import java.io.IOException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
