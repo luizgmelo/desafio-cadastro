@@ -27,8 +27,8 @@ public class Pet {
         this.type = PetType.valueOf(petData.get(1));
         this.sex = PetSex.valueOf(petData.get(2));
         this.address = new Address(petData.get(3), Integer.parseInt(petData.get(4)), petData.get(5));
-        this.age = petData.get(6).equals(NOT_INFORMED) ?  null : Float.parseFloat(petData.get(6));
-        this.weight = petData.get(7).equals(NOT_INFORMED) ? null : Float.parseFloat(petData.get(7));
+        this.age = petData.get(6).equals(NOT_INFORMED) ?  null : Float.parseFloat(petData.get(6).replace(" anos", ""));
+        this.weight = petData.get(7).equals(NOT_INFORMED) ? null : Float.parseFloat(petData.get(7).replace("kg", ""));
         this.breed = petData.get(8);
     }
 
