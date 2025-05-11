@@ -6,20 +6,22 @@ import br.com.luizgmelo.desafiocadastro.models.PetType;
 public class ValidateService {
     private static final String NOT_INFORMED = "NÃO INFORMADO";
 
-    public static void validateName(String name, String fieldName) {
+    public static String validateName(String name, String fieldName) {
         if (name.trim().isEmpty()) {
             throw new RuntimeException(fieldName + " é um campo obrigatório");
         } else if (!name.matches("^[ a-zA-Z]+$")) {
             throw new RuntimeException(fieldName + " só pode conter letras");
         }
+        return name;
     }
 
-    public static void validateStreetName(String streetName) {
+    public static String validateStreetName(String streetName) {
         if (streetName.trim().isEmpty()) {
             throw new RuntimeException("o nome da rua é um campo obrigatório");
         } else if (!streetName.matches("^[ a-zA-Z0-9]+$")) {
             throw new RuntimeException("o nome da rua não pode conter caracteres especiais");
         }
+        return streetName;
     }
 
     public static PetType validateType(String type) {
@@ -73,7 +75,7 @@ public class ValidateService {
             age = Float.parseFloat(ageString);
 
             if (age <= 0 || age > 20) {
-                throw new RuntimeException("A idade deve ser entre 0.1 e 20 anos.");
+                throw new IllegalArgumentException("A idade deve ser entre 0.1 e 20 anos.");
             }
 
         } catch (NumberFormatException e) {
@@ -94,7 +96,7 @@ public class ValidateService {
             weight = Float.parseFloat(weightString);
 
             if (weight < 0.5 || weight > 60.0) {
-                throw new RuntimeException("O peso deve ser um número entre 0.5kg e 60kg");
+                throw new IllegalArgumentException("O peso deve ser um número entre 0.5kg e 60kg");
             }
 
         } catch (NumberFormatException e) {

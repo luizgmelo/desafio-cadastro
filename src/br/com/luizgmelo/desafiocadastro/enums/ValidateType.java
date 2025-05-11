@@ -30,8 +30,7 @@ public enum ValidateType {
     public <T> Object validate (String value) {
        switch (this) {
            case NOME:
-               ValidateService.validateName(value, "nome");
-               return null;
+               return ValidateService.validateName(value, "nome");
            case TIPO:
                return ValidateService.validateType(value);
            case SEXO:
@@ -41,16 +40,13 @@ public enum ValidateType {
            case PESO:
                return ValidateService.validateWeight(value);
            case RUA:
-               ValidateService.validateStreetName(value);
-               return null;
+               return ValidateService.validateStreetName(value);
            case CIDADE:
-               ValidateService.validateName(value, "nome da cidade");
-               return null;
+               return ValidateService.validateName(value, "nome da cidade");
            case NUMEROCASA:
                 return ValidateService.validateHouseNumber(value);
            case RACA:
-               ValidateService.validateName(value, "raca");
-               return null;
+               return ValidateService.validateName(value, "raca");
        }
        
        throw new IllegalArgumentException();

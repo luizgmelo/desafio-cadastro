@@ -12,6 +12,10 @@ public class Pet {
     private String breed;
     private final String NOT_INFORMED = "NÃO INFORMADO";
 
+    public Pet(Address address) {
+        this.address = address;
+    }
+
     public Pet(String name, PetType type, PetSex sex, Address address, Float age, Float weight, String breed) {
         this.name = name;
         this.type = type;

@@ -76,45 +76,38 @@ public class UI {
 
         petController.openReaderService();
 
+        Pet newPet = petController.createPet();
+
         // 1. Qual o nome e sobrenome do pet?
-        String petName = readQuestionAndAnswer();
-        petController.validateValue(petName, ValidateType.NOME);
+        newPet.setName((String) petController.validateValue(readQuestionAndAnswer(), ValidateType.NOME));
 
         // 2. Qual o tipo do pet (Cachorro/Gato)?
-        String type = readQuestionAndAnswer();
-        PetType petType = (PetType) petController.validateValue(type, ValidateType.TIPO);
+        newPet.setType((PetType) petController.validateValue(readQuestionAndAnswer(), ValidateType.TIPO));
 
         // 3. Qual o sexo do animal?
-        String sex = readQuestionAndAnswer();
-        PetSex petSex = (PetSex) petController.validateValue(sex, ValidateType.SEXO);
+        newPet.setSex((PetSex) petController.validateValue(readQuestionAndAnswer(), ValidateType.SEXO));
 
         //  4 - Qual o nome da Rua que ele foi encontrado?
-        String petStreet = readQuestionAndAnswer();
-        petController.validateValue(petStreet, ValidateType.RUA);
+        newPet.getAddress().setStreet((String) petController.validateValue(readQuestionAndAnswer(), ValidateType.RUA));
 
         // 5 - Qual o número da casa?
-        String petHouseNumber = readQuestionAndAnswer();
-        Integer petHouseNumberInteger = (Integer) petController.validateValue(petHouseNumber, ValidateType.NUMEROCASA);
+        newPet.getAddress().setHouseNumber((Integer) petController.validateValue(readQuestionAndAnswer(), ValidateType.NUMEROCASA));
 
         // 6 - Qual a cidade?
-        String petCity = readQuestionAndAnswer();
-        petController.validateValue(petCity,  ValidateType.CIDADE);
+        newPet.getAddress().setCity((String) petController.validateValue(readQuestionAndAnswer(),  ValidateType.CIDADE));
 
         // 7. Qual a idade aproximada do pet?
-        String petAge = readQuestionAndAnswer();
-        Float petAgeFloat = (Float) petController.validateValue(petAge, ValidateType.IDADE);
+        newPet.setAge((Float) petController.validateValue(readQuestionAndAnswer(), ValidateType.IDADE));
 
         // 8. Qual o peso em kilos aproximado do pet?
-        String petWeight = readQuestionAndAnswer();
-        Float petWeightFloat = (Float) petController.validateValue(petWeight, ValidateType.PESO);
+        newPet.setWeight((Float) petController.validateValue(readQuestionAndAnswer(), ValidateType.PESO));
 
         // 9. Qual a raça do pet?
-        String petBreed = readQuestionAndAnswer();
-        petController.validateValue(petBreed, ValidateType.RACA);
+        newPet.setBreed((String) petController.validateValue(readQuestionAndAnswer(), ValidateType.RACA));
 
         petController.closeReaderService();
 
-        petController.addPet(petName, petType, petSex, petStreet, petHouseNumberInteger, petCity, petAgeFloat, petWeightFloat, petBreed);
+        petController.addPet(newPet);
 
         System.out.println("Cadastro realizado com sucesso!");
     }
